@@ -1,11 +1,4 @@
-﻿using Customer.Service.Exceptions;
-using Customer.Service.Infrastructure.Auth;
-using Customer.Service.Models;
-using Customer.Service.Repositories;
-using Customer.Service.Services;
-using Microsoft.Extensions.Configuration;
-
-namespace Customer.Service.UnitTests.Services
+﻿namespace Customer.Service.UnitTests.Services
 {
     public class UserServiceTests: IDisposable
     {
@@ -318,7 +311,20 @@ namespace Customer.Service.UnitTests.Services
             var result = service.GetAllUsers();
 
             Assert.NotNull(result);
-            Assert.Equal(2, _users.Count());
+            Assert.Equal(2, result.Count());
+            _mockUserRepository.Verify(r => r.GetAllUsers(), Times.Once);
+        }
+
+        [Fact]
+        public void GetAllUsers_returns_empty_list_when_none_are_found()
+        {
+            _mockUserRepository.Setup(u => u.GetAllUsers()).Returns(new List<UserModel>());
+
+            var service = new UserService(_mockConfiguration.Object, _mockUserRepository.Object, _mockPasswordHash.Object);
+            var result = service.GetAllUsers();
+
+            Assert.NotNull(result);
+            Assert.Empty(result);
             _mockUserRepository.Verify(r => r.GetAllUsers(), Times.Once);
         }
 

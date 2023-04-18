@@ -1,9 +1,4 @@
-﻿using Customer.Service.Models;
-using Customer.Service.Repositories;
-using JsonFlatFileDataStore;
-using Microsoft.Extensions.Logging;
-
-namespace Customer.Service.UnitTests.Repositories
+﻿namespace Customer.Service.UnitTests.Repositories
 {
     public class SessionRepositoryTests: IDisposable
     {

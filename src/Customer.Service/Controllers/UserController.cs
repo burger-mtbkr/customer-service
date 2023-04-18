@@ -37,7 +37,7 @@ namespace Customer.Service.Controllers
         /// <returns></returns>
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(UserNotFoundException), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<UserResponse> Get(string id)
         {
             var user = _userService.GetUser(id);
@@ -52,8 +52,8 @@ namespace Customer.Service.Controllers
         /// <returns></returns>
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(typeof(UserNotFoundException), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(ArgumentNullException), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> Put(string id, [FromBody] UserModel model)
         {
             await _userService.EditUserAsync(id, model);
@@ -67,7 +67,7 @@ namespace Customer.Service.Controllers
         /// <returns></returns>
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(typeof(ArgumentNullException), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType( StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> Delete(string id)
         {
             await _userService.DeleteUserAsync(id);
@@ -82,8 +82,8 @@ namespace Customer.Service.Controllers
         /// <returns></returns>
         [HttpPatch("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(typeof(UserNotFoundException), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(ArgumentNullException), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> Patch(string id, [FromBody] PasswordChangeRequest request)
         {
             await _userService.ChangePasswordAsync(id, request);

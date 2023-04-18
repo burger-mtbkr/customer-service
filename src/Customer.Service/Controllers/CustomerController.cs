@@ -36,7 +36,7 @@ namespace Customer.Service.Controllers
         /// <returns></returns>
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(CustomerModel), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(CustomerNotFoundException), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<CustomerModel?> Get(string id)
         {
             var customer = _customerService.GetCustomerByID(id);
@@ -44,18 +44,17 @@ namespace Customer.Service.Controllers
         }
 
         /// <summary>
-        /// Edit a customer
+        /// Create a customer
         /// </summary>
-        /// <param name="id"></param>
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(typeof(string), StatusCodes.Status201Created)]
-        [ProducesResponseType(typeof(CustomerNotFoundException), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(ArgumentNullException), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Post([FromBody] CustomerModel model)
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<CustomerModel>> Post([FromBody] CustomerModel model)
         {
-            var newCustomer = await _customerService.CreateCustomer(model);
+            var newCustomer = await _customerService.CreateCustomerAsync(model);
             return Created("/api/customer", newCustomer);
         }
 
@@ -67,8 +66,8 @@ namespace Customer.Service.Controllers
         /// <returns></returns>
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(typeof(CustomerNotFoundException), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(ArgumentNullException), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Put(string id, [FromBody] CustomerModel model)
         {
             await _customerService.UpdateCustomerAsync(id, model);
@@ -83,11 +82,11 @@ namespace Customer.Service.Controllers
         /// <returns></returns>
         [HttpPatch("{id}")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
-        [ProducesResponseType(typeof(CustomerNotFoundException), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(ArgumentNullException), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Patch(string id, [FromBody] CustomerStatusUpdateRequest model)
         {
-            await _customerService.UpdateCustomerAsync(id, model);
+            await _customerService.UpdateCustomerStatusAsync(id, model);
             return Accepted();
         }
 
@@ -98,10 +97,10 @@ namespace Customer.Service.Controllers
         /// <returns></returns>
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(typeof(ArgumentNullException), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Delete(string id)
         {
-            await _customerService.DeleteCustomer(id);
+            await _customerService.DeleteCustomerAsync(id);
             return NoContent();
         }
     }

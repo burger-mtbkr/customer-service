@@ -1,9 +1,4 @@
-﻿using Customer.Service.Exceptions;
-using Customer.Service.Infrastructure.Auth;
-using Customer.Service.Models;
-using Customer.Service.Services;
-
-namespace Customer.Service.UnitTests.Services
+﻿namespace Customer.Service.UnitTests.Services
 {
     public class LoginServiceTests: IDisposable
     {
