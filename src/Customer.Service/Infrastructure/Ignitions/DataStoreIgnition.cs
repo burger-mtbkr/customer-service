@@ -25,6 +25,8 @@ namespace Customer.Service.Ignition
             builder.Services.AddSingleton<IDataStore>(d => dataStore);
             builder.Services.AddScoped(s => dataStore.GetCollection<Session>("sessions"));
             builder.Services.AddScoped(s => dataStore.GetCollection<UserModel>("users"));
+            builder.Services.AddScoped(s => dataStore.GetCollection<CustomerModel>("customer"));
+            builder.Services.AddScoped(s => dataStore.GetCollection<LeadModel>("customer_leads"));
         }
     }
 }

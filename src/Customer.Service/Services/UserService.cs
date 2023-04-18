@@ -15,7 +15,7 @@ namespace Customer.Service.Services
         {
             _configuration = configuration;
             _userRepository = userRepository;
-            _passwordHash = passwordHash;           
+            _passwordHash = passwordHash;
         }
 
         public bool CheckEmailAvailability(string email)
@@ -50,7 +50,7 @@ namespace Customer.Service.Services
                 LastName = model.LastName,
                 Password = saltedPassword,
                 Salt = salt,
-                CreatedDate = DateTime.UtcNow,
+                CreatedDateUtc = DateTime.UtcNow,
             };
 
             return await _userRepository.CreateUserAsync(user);

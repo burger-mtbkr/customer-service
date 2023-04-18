@@ -13,7 +13,7 @@
             LastName = "TestSurname",
             Password = "password",
             Salt = "passwordSaltString",
-            CreatedDate = DateTime.UtcNow,
+            CreatedDateUtc = DateTime.UtcNow,
         };
 
         private readonly IEnumerable<UserModel> _users = new List<UserModel>
@@ -26,7 +26,7 @@
                 LastName = "TestSurname",
                 Password = "password",
                 Salt = "passwordSaltString",
-                CreatedDate = DateTime.UtcNow,
+                CreatedDateUtc = DateTime.UtcNow,
             },
             new UserModel
             {
@@ -36,7 +36,7 @@
                 LastName = "UserTestSurname",
                 Password = "foo_bar_fred",
                 Salt = "ate_some_bread",
-                CreatedDate = DateTime.UtcNow,
+                CreatedDateUtc = DateTime.UtcNow,
             },
         };
 
@@ -76,7 +76,7 @@
             var result = (Assert.IsType<OkObjectResult>(response.Result));
 
             Assert.NotNull(result.Value);
-            Assert.IsAssignableFrom<IEnumerable<UserResponse>>(result.Value);
+            Assert.IsAssignableFrom<IEnumerable<UserModel>>(result.Value);
         }
 
         [Fact]
@@ -91,7 +91,7 @@
             Assert.IsType<OkObjectResult>(response.Result);
 
             var result = (Assert.IsType<OkObjectResult>(response.Result));
-            var items = (IEnumerable<UserResponse>)result.Value!;
+            var items = (IEnumerable<UserModel>)result.Value!;
             Assert.Equal(2, items.Count());
         }
 
@@ -126,7 +126,7 @@
             var result = (Assert.IsType<OkObjectResult>(response.Result));
 
             Assert.NotNull(result.Value);
-            Assert.IsAssignableFrom<UserResponse>(result.Value);
+            Assert.IsAssignableFrom<UserModel>(result.Value);
         }
 
         [Fact]
@@ -141,7 +141,7 @@
             Assert.IsType<OkObjectResult>(response.Result);
 
             var result = (Assert.IsType<OkObjectResult>(response.Result));
-            var item = (UserResponse)result.Value!;
+            var item = (UserModel)result.Value!;
             Assert.NotNull(item);
         }
 
@@ -164,7 +164,7 @@
         }
 
         [Fact]
-        public async Task Patch_returns_no_content_when_deleting_a_user_by_id()
+        public async Task Patch_returns_no_content_when_updating_user_password()
         {
             _mockUserService.Setup(s => s.ChangePasswordAsync(It.IsAny<string>(), It.IsAny<PasswordChangeRequest>())).ReturnsAsync(true);
             var controller = new UserController(_mockUserService.Object);

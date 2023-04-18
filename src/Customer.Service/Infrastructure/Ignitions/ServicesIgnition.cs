@@ -7,7 +7,6 @@ namespace Customer.Service.Ignition
     {
         public static void ConfigureServices(this IServiceCollection services)
         {
-
             services.AddSingleton<ITokenHelper, TokenHelper>();
             services.AddSingleton<IPasswordHash, PasswordHash>();
 
@@ -15,6 +14,7 @@ namespace Customer.Service.Ignition
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ISessionService, SessionService>();
             services.AddScoped<ILoginService, LoginService>();
+            services.AddScoped<ICustomerService, CustomerService>();
         }
     }
 }

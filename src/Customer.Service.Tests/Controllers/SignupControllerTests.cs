@@ -82,7 +82,7 @@
                 LastName = "TestSurname",
                 Password = "password",
                 Salt = "passwordSaltString",
-                CreatedDate = DateTime.UtcNow,
+                CreatedDateUtc = DateTime.UtcNow,
             };
 
             _mockUserService.Setup(s => s.CreateUserAsync(It.IsAny<SignupRequest>())).ReturnsAsync(mockUser);
@@ -112,7 +112,7 @@
                 LastName = "TestSurname",
                 Password = "password",
                 Salt = "passwordSaltString",
-                CreatedDate = DateTime.UtcNow,
+                CreatedDateUtc = DateTime.UtcNow,
             };
 
             _mockUserService.Setup(s => s.CreateUserAsync(It.IsAny<SignupRequest>())).ReturnsAsync(mockUser);

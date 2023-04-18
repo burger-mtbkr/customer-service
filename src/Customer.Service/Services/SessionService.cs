@@ -31,6 +31,6 @@ using Customer.Service.Models;using Customer.Service.Repositories;namespace C
         private Session CreateSessionObject(string userId)        {            var user = _userService.GetUser(userId);            if(user == null)            {
                 throw new UserNotFoundException($"User not found for id {userId}");
             }            return new Session            {                Id = Guid.NewGuid().ToString(),                Token = _tokenHelper.CreateJwtToken(_configuration, user),
-                UserId = userId,                UserEmail = user.Email,                CreatedDate = DateTime.UtcNow,
+                UserId = userId,                UserEmail = user.Email,                CreatedDateUtc = DateTime.UtcNow,
             };
         }    }}

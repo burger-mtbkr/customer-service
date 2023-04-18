@@ -1,12 +1,4 @@
-﻿using Customer.Service.Exceptions;
-using Customer.Service.Infrastructure.Auth;
-using Customer.Service.Models;
-using Customer.Service.Repositories;
-using Customer.Service.Services;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-
-namespace Customer.Service.UnitTests.Services
+﻿namespace Customer.Service.UnitTests.Services
 {
     public class SessionServiceTests: IDisposable
     {
@@ -23,7 +15,7 @@ namespace Customer.Service.UnitTests.Services
             new Session
             {
                 Id = Guid.NewGuid().ToString(),
-                CreatedDate = DateTime.UtcNow,
+                CreatedDateUtc = DateTime.UtcNow,
                 Token = Guid.NewGuid().ToString(),
                 UserEmail = "some.test@user.com",
                 UserId = Guid.NewGuid().ToString(),
@@ -31,7 +23,7 @@ namespace Customer.Service.UnitTests.Services
             },
             new Session {
                 Id = "C51989A0-4D7B-4532-A05C-3851ABE24206",
-                CreatedDate = DateTime.UtcNow,
+                CreatedDateUtc = DateTime.UtcNow,
                 Token = "boohoo123456778",
                 UserEmail = "some.test@user.com",
                 UserId = "B15A0836-BCBF-49DC-83E7-0F9D962C2A79",
@@ -55,7 +47,7 @@ namespace Customer.Service.UnitTests.Services
             var mockSession = new Session
             {
                 Id = "C51989A0-4D7B-4532-A05C-3851ABE24206",
-                CreatedDate = DateTime.UtcNow,
+                CreatedDateUtc = DateTime.UtcNow,
                 Token = "boohoo123456778",
                 UserEmail = "some.test@user.com",
                 UserId = "B15A0836-BCBF-49DC-83E7-0F9D962C2A79",
@@ -68,7 +60,7 @@ namespace Customer.Service.UnitTests.Services
                 Email = "",
                 FirstName = "Test",
                 LastName = "Test",
-                CreatedDate = DateTime.UtcNow,
+                CreatedDateUtc = DateTime.UtcNow,
                 Password = "abcdef",
                 Salt = "86876876"
             };
@@ -217,7 +209,7 @@ namespace Customer.Service.UnitTests.Services
             var mockSession = new Session
             {
                 Id = mockToken,
-                CreatedDate = DateTime.UtcNow,
+                CreatedDateUtc = DateTime.UtcNow,
                 Token = Guid.NewGuid().ToString(),
                 UserEmail = "some.test@user.com",
                 UserId = Guid.NewGuid().ToString(),
@@ -232,7 +224,7 @@ namespace Customer.Service.UnitTests.Services
             Assert.NotNull(resultSessionObject);
 
             Assert.Equal(mockSession.Id, resultSessionObject.Id);
-            Assert.Equal(mockSession.CreatedDate, resultSessionObject.CreatedDate);
+            Assert.Equal(mockSession.CreatedDateUtc, resultSessionObject.CreatedDateUtc);
             Assert.Equal(mockSession.Token, resultSessionObject.Token);
             Assert.Equal(mockSession.UserEmail, resultSessionObject.UserEmail);
             Assert.Equal(mockSession.UserId, resultSessionObject.UserId);
@@ -249,7 +241,7 @@ namespace Customer.Service.UnitTests.Services
             var mockSession = new Session
             {
                 Id = mockToken,
-                CreatedDate = DateTime.UtcNow,
+                CreatedDateUtc = DateTime.UtcNow,
                 Token = Guid.NewGuid().ToString(),
                 UserEmail = "some.test@user.com",
                 UserId = Guid.NewGuid().ToString(),

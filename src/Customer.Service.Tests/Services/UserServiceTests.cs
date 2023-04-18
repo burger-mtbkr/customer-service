@@ -1,11 +1,4 @@
-﻿using Customer.Service.Exceptions;
-using Customer.Service.Infrastructure.Auth;
-using Customer.Service.Models;
-using Customer.Service.Repositories;
-using Customer.Service.Services;
-using Microsoft.Extensions.Configuration;
-
-namespace Customer.Service.UnitTests.Services
+﻿namespace Customer.Service.UnitTests.Services
 {
     public class UserServiceTests: IDisposable
     {
@@ -22,7 +15,7 @@ namespace Customer.Service.UnitTests.Services
             LastName = "TestSurname",
             Password = "password",
             Salt = "passwordSaltString",
-            CreatedDate = DateTime.UtcNow,
+            CreatedDateUtc = DateTime.UtcNow,
         };
 
         private readonly IEnumerable<UserModel> _users = new List<UserModel>
@@ -35,7 +28,7 @@ namespace Customer.Service.UnitTests.Services
                 LastName = "TestSurname",
                 Password = "password",
                 Salt = "passwordSaltString",
-                CreatedDate = DateTime.UtcNow,
+                CreatedDateUtc = DateTime.UtcNow,
             },
             new UserModel
             {
@@ -45,7 +38,7 @@ namespace Customer.Service.UnitTests.Services
                 LastName = "UserTestSurname",
                 Password = "foo_bar_fred",
                 Salt = "ate_some_bread",
-                CreatedDate = DateTime.UtcNow,
+                CreatedDateUtc = DateTime.UtcNow,
             },
         };
 
@@ -215,7 +208,7 @@ namespace Customer.Service.UnitTests.Services
             Assert.Equal(_mockUser.LastName, result.LastName);
             Assert.Equal(_mockUser.Password, result.Password);
             Assert.Equal(_mockUser.Salt, result.Salt);
-            Assert.Equal(_mockUser.CreatedDate, result.CreatedDate);
+            Assert.Equal(_mockUser.CreatedDateUtc, result.CreatedDateUtc);
 
             _mockUserRepository.Verify(r => r.GetUser(_mockUserId), Times.Once);
         }
@@ -318,7 +311,20 @@ namespace Customer.Service.UnitTests.Services
             var result = service.GetAllUsers();
 
             Assert.NotNull(result);
-            Assert.Equal(2, _users.Count());
+            Assert.Equal(2, result.Count());
+            _mockUserRepository.Verify(r => r.GetAllUsers(), Times.Once);
+        }
+
+        [Fact]
+        public void GetAllUsers_returns_empty_list_when_none_are_found()
+        {
+            _mockUserRepository.Setup(u => u.GetAllUsers()).Returns(new List<UserModel>());
+
+            var service = new UserService(_mockConfiguration.Object, _mockUserRepository.Object, _mockPasswordHash.Object);
+            var result = service.GetAllUsers();
+
+            Assert.NotNull(result);
+            Assert.Empty(result);
             _mockUserRepository.Verify(r => r.GetAllUsers(), Times.Once);
         }
 
@@ -336,7 +342,7 @@ namespace Customer.Service.UnitTests.Services
             Assert.Equal(_mockUser.LastName, result.LastName);
             Assert.Equal(_mockUser.Password, result.Password);
             Assert.Equal(_mockUser.Salt, result.Salt);
-            Assert.Equal(_mockUser.CreatedDate, result.CreatedDate);
+            Assert.Equal(_mockUser.CreatedDateUtc, result.CreatedDateUtc);
 
             _mockUserRepository.Verify(r => r.GetUserByEmail(_mockUser.Email), Times.Once);
         }

@@ -1,9 +1,4 @@
-﻿using Customer.Service.Exceptions;
-using Customer.Service.Infrastructure.Auth;
-using Customer.Service.Models;
-using Customer.Service.Services;
-
-namespace Customer.Service.UnitTests.Services
+﻿namespace Customer.Service.UnitTests.Services
 {
     public class LoginServiceTests: IDisposable
     {
@@ -75,7 +70,7 @@ namespace Customer.Service.UnitTests.Services
                 Email = "test@email.com",
                 FirstName = "Test",
                 LastName = "Test",
-                CreatedDate = DateTime.UtcNow,
+                CreatedDateUtc = DateTime.UtcNow,
                 Password = "password",
                 Salt = "86876876"
             };
@@ -131,7 +126,7 @@ namespace Customer.Service.UnitTests.Services
                 Email = "test@email.com",
                 FirstName = "Test",
                 LastName = "Test",
-                CreatedDate = DateTime.UtcNow,
+                CreatedDateUtc = DateTime.UtcNow,
                 Password = "password",
                 Salt = "86876876"
             };

@@ -2,7 +2,6 @@
 using Customer.Service.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
 
 namespace Customer.Service.Controllers
 {
@@ -36,7 +35,7 @@ namespace Customer.Service.Controllers
             }
 
             // Create the new user
-            var user = await _userService.CreateUserAsync(model);            
+            var user = await _userService.CreateUserAsync(model);
 
             // create the session for the user			
             var sessionInfo = await _sessionService.CreateSession(user.Id);

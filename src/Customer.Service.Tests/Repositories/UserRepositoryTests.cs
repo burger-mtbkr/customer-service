@@ -1,15 +1,10 @@
-﻿using Customer.Service.Exceptions;
-using Customer.Service.Models;
-using Customer.Service.Repositories;
-using JsonFlatFileDataStore;
-
-namespace Customer.Service.UnitTests.Repositories
+﻿namespace Customer.Service.UnitTests.Repositories
 {
     public class UserRepositoryTests: IDisposable
     {
         private readonly Mock<IDocumentCollection<UserModel>> _collection;
 
-        private readonly IEnumerable<UserModel> _users = new List<UserModel>
+        private readonly IEnumerable<UserModel> _mockUsers = new List<UserModel>
         {
             new UserModel
             {
@@ -19,7 +14,7 @@ namespace Customer.Service.UnitTests.Repositories
                 LastName = "TestSurname",
                 Password = "password",
                 Salt = "passwordSaltString",
-                CreatedDate = DateTime.UtcNow,
+                CreatedDateUtc = DateTime.UtcNow,
             },
             new UserModel
             {
@@ -29,7 +24,7 @@ namespace Customer.Service.UnitTests.Repositories
                 LastName = "UserTestSurname",
                 Password = "foo_bar_fred",
                 Salt = "ate_some_bread",
-                CreatedDate = DateTime.UtcNow,
+                CreatedDateUtc = DateTime.UtcNow,
             },
         };
 
@@ -41,10 +36,10 @@ namespace Customer.Service.UnitTests.Repositories
         [Fact]
         public void CheckEmailAvailability_calls_returns_false_if_email_exists()
         {
-            _collection.Setup(c => c.AsQueryable()).Returns(_users);
+            _collection.Setup(c => c.AsQueryable()).Returns(_mockUsers);
 
-            var sessionRepo = new UserRepository(_collection.Object);
-            var result = sessionRepo.CheckEmailAvailability("test.user@mock.com");
+            var userRepo = new UserRepository(_collection.Object);
+            var result = userRepo.CheckEmailAvailability("test.user@mock.com");
 
             Assert.False(result);
         }
@@ -52,10 +47,10 @@ namespace Customer.Service.UnitTests.Repositories
         [Fact]
         public void CheckEmailAvailability_calls_returns_true_if_email_exists()
         {
-            _collection.Setup(c => c.AsQueryable()).Returns(_users);
+            _collection.Setup(c => c.AsQueryable()).Returns(_mockUsers);
 
-            var sessionRepo = new UserRepository(_collection.Object);
-            var result = sessionRepo.CheckEmailAvailability("new.user@mock.com");
+            var userRepo = new UserRepository(_collection.Object);
+            var result = userRepo.CheckEmailAvailability("new.user@mock.com");
 
             Assert.True(result);
         }
@@ -71,22 +66,22 @@ namespace Customer.Service.UnitTests.Repositories
                 LastName = "TestSurname",
                 Password = "password",
                 Salt = "passwordSaltString",
-                CreatedDate = DateTime.UtcNow,
+                CreatedDateUtc = DateTime.UtcNow,
             };
 
-            var sessionRepo = new UserRepository(_collection.Object);
+            var userRepo = new UserRepository(_collection.Object);
 
-            var result = await sessionRepo.CreateUserAsync(newUser);
+            var result = await userRepo.CreateUserAsync(newUser);
             _collection.Verify(c => c.InsertOneAsync(newUser), Times.Once());
         }
 
         [Fact]
         public void GetUser_returns_a_valid_user_if_one_exists()
         {
-            _collection.Setup(c => c.AsQueryable()).Returns(_users);
+            _collection.Setup(c => c.AsQueryable()).Returns(_mockUsers);
 
-            var sessionRepo = new UserRepository(_collection.Object);
-            var result = sessionRepo.GetUser("71204C8F-7E5C-49E3-9932-2EA81134E30E");
+            var userRepo = new UserRepository(_collection.Object);
+            var result = userRepo.GetUser("71204C8F-7E5C-49E3-9932-2EA81134E30E");
 
             Assert.NotNull(result);
             Assert.Equal("71204C8F-7E5C-49E3-9932-2EA81134E30E", result.Id);
@@ -100,10 +95,10 @@ namespace Customer.Service.UnitTests.Repositories
         [Fact]
         public void GetUser_returns_null_if_no_match_is_found_for_id()
         {
-            _collection.Setup(c => c.AsQueryable()).Returns(_users);
+            _collection.Setup(c => c.AsQueryable()).Returns(_mockUsers);
 
-            var sessionRepo = new UserRepository(_collection.Object);
-            var result = sessionRepo.GetUser("786786786");
+            var userRepo = new UserRepository(_collection.Object);
+            var result = userRepo.GetUser("786786786");
             Assert.Null(result);
         }
 
@@ -118,12 +113,12 @@ namespace Customer.Service.UnitTests.Repositories
                 LastName = "TestSurname",
                 Password = "password",
                 Salt = "passwordSaltString",
-                CreatedDate = DateTime.UtcNow,
+                CreatedDateUtc = DateTime.UtcNow,
             };
             _collection.Setup(c => c.AsQueryable()).Returns(new List<UserModel> { editedUser });
 
-            var sessionRepo = new UserRepository(_collection.Object);
-            var result = await sessionRepo.EditUserAsync(editedUser);
+            var userRepo = new UserRepository(_collection.Object);
+            var result = await userRepo.EditUserAsync(editedUser);
 
             _collection.Verify(c => c.ReplaceOneAsync(editedUser.Id, editedUser, false), Times.Once());
         }
@@ -139,7 +134,7 @@ namespace Customer.Service.UnitTests.Repositories
                 LastName = "TestSurname",
                 Password = "password",
                 Salt = "passwordSaltString",
-                CreatedDate = DateTime.UtcNow,
+                CreatedDateUtc = DateTime.UtcNow,
             };
             _collection.Setup(c => c.AsQueryable()).Returns(new List<UserModel>());
 
@@ -152,7 +147,7 @@ namespace Customer.Service.UnitTests.Repositories
         [Fact]
         public void GetAllUsers_returns_all_stored_users()
         {
-            _collection.Setup(c => c.AsQueryable()).Returns(_users);
+            _collection.Setup(c => c.AsQueryable()).Returns(_mockUsers);
             var usersRepo = new UserRepository(_collection.Object);
             var users = usersRepo.GetAllUsers();
 
@@ -163,12 +158,25 @@ namespace Customer.Service.UnitTests.Repositories
         }
 
         [Fact]
-        public void GetUserByEmail_returns_a_session_matching_a_provided_token()
+        public void GetAllUsers_returns_empty_list_when_none_are_found()
         {
-            _collection.Setup(c => c.AsQueryable()).Returns(_users);
+            _collection.Setup(c => c.AsQueryable()).Returns(new List<UserModel>());
+            var usersRepo = new UserRepository(_collection.Object);
+            var users = usersRepo.GetAllUsers();
 
-            var sessionRepo = new UserRepository(_collection.Object);
-            var user = sessionRepo.GetUserByEmail("test.user@mock.com");
+            Assert.NotNull(users);
+            Assert.IsAssignableFrom<IEnumerable<UserModel>>(users);
+            Assert.Empty(users);
+            _collection.Verify(c => c.AsQueryable(), Times.Once());
+        }
+
+        [Fact]
+        public void GetUserByEmail_returns_a_user_matching_a_provided_token()
+        {
+            _collection.Setup(c => c.AsQueryable()).Returns(_mockUsers);
+
+            var userRepo = new UserRepository(_collection.Object);
+            var user = userRepo.GetUserByEmail("test.user@mock.com");
 
             Assert.NotNull(user);
             Assert.IsType<UserModel>(user);
@@ -181,14 +189,14 @@ namespace Customer.Service.UnitTests.Repositories
         }
 
         [Fact]
-        public void GetUserByEmail_returns_null_when_no_session_is_found_to_match_a_provided_token()
+        public void GetUserByEmail_returns_null_when_no_user_is_found_to_match_a_provided_token()
         {
-            _collection.Setup(c => c.AsQueryable()).Returns(_users);
+            _collection.Setup(c => c.AsQueryable()).Returns(_mockUsers);
 
-            var sessionRepo = new UserRepository(_collection.Object);
-            var session = sessionRepo.GetUserByEmail("abcdef1234567890");
+            var userRepo = new UserRepository(_collection.Object);
+            var user = userRepo.GetUserByEmail("abcdef1234567890");
 
-            Assert.Null(session);
+            Assert.Null(user);
             _collection.Verify(c => c.AsQueryable(), Times.Once());
         }
 
@@ -196,7 +204,7 @@ namespace Customer.Service.UnitTests.Repositories
         public async Task DeleteUserAsync_calls_DeleteOneAsync_with_provided_userId()
         {
             var id = "71204C8F-7E5C-49E3-9932-2EA81134E30E";
-            _collection.Setup(c => c.AsQueryable()).Returns(_users);
+            _collection.Setup(c => c.AsQueryable()).Returns(_mockUsers);
 
             var userRepo = new UserRepository(_collection.Object);
             await userRepo.DeleteUserAsync(id);
@@ -209,7 +217,7 @@ namespace Customer.Service.UnitTests.Repositories
         public async Task DeleteUserAsync_throws_UserNotFoundException_whne_user_is_not_found()
         {
             var id = "test-7E5C-49E3-9932-2EA81134E30E";
-            _collection.Setup(c => c.AsQueryable()).Returns(_users);
+            _collection.Setup(c => c.AsQueryable()).Returns(_mockUsers);
 
             var userRepo = new UserRepository(_collection.Object);
             await Assert.ThrowsAsync<UserNotFoundException>(() => userRepo.DeleteUserAsync(id));

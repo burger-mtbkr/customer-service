@@ -35,7 +35,7 @@ namespace Customer.Service.Controllers
         /// <returns></returns>
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(Session), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(UnauthorizedAccessException), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public ActionResult<Session> Get(string id)
         {
             var sessions = _sessionService.GetSession(id);
@@ -49,7 +49,7 @@ namespace Customer.Service.Controllers
         /// <returns></returns>
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(typeof(ArgumentNullException), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Delete(string id)
         {
             await _sessionService.DeleteSession(id);

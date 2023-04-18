@@ -1,6 +1,4 @@
-﻿using Customer.Service.Infrastructure.Auth;
-using Customer.Service.Repositories;
-using Customer.Service.Services;
+﻿using Customer.Service.Repositories;
 
 namespace Customer.Service.Ignition
 {
@@ -10,6 +8,7 @@ namespace Customer.Service.Ignition
         {
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ISessionRepository, SessionRepository>();
+            services.AddScoped<ICustomerRepository, CustomerRepository>();
         }
     }
 }
