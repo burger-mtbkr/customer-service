@@ -1,5 +1,6 @@
 ﻿using Customer.Service.Infrastructure.Auth;
 using Customer.Service.Services;
+using Customer.Service.Tests.Services;
 
 namespace Customer.Service.Ignition
 {
@@ -15,6 +16,7 @@ namespace Customer.Service.Ignition
             services.AddScoped<ISessionService, SessionService>();
             services.AddScoped<ILoginService, LoginService>();
             services.AddScoped<ICustomerService, CustomerService>();
+            services.AddScoped<ILeadsService, LeadsService>();
         }
     }
 }

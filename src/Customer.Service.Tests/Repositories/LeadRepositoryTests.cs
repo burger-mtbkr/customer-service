@@ -63,7 +63,7 @@
             _collection.Setup(c => c.AsQueryable()).Returns(_mockLeads);
 
             var sessionRepo = new LeadRepository(_collection.Object);
-            var result = sessionRepo.GetLeadByid(_mockLeads.First().Id);
+            var result = sessionRepo.GetLeadById(_mockLeads.First().Id);
 
             Assert.NotNull(result);
             Assert.IsAssignableFrom<LeadModel>(result);
@@ -76,7 +76,7 @@
             _collection.Setup(c => c.AsQueryable()).Returns(_mockLeads);
 
             var sessionRepo = new LeadRepository(_collection.Object);
-            var result = sessionRepo.GetLeadByid("9999");
+            var result = sessionRepo.GetLeadById("9999");
 
             Assert.Null(result);
             _collection.Verify(c => c.AsQueryable(), Times.Once());

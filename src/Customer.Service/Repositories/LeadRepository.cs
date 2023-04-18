@@ -17,7 +17,7 @@ namespace Customer.Service.Repositories
             return collection.Where(c => c.CustomerId == customerId);
         }
 
-        public LeadModel? GetLeadByid(string id)
+        public LeadModel? GetLeadById(string id)
         {
             var collection = _collection.AsQueryable();
             return collection.FirstOrDefault(c => c.Id == id);

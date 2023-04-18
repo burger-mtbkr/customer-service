@@ -18,6 +18,16 @@ namespace Customer.Service.MIddleware
             {
                 await next(context);
             }
+            catch(CustomerNotFoundException e)
+            {
+                logger.LogError(e.Message, e);
+                context.Response.StatusCode = (int)HttpStatusCode.NotFound;
+            }
+            catch(LeadNotFoundException e)
+            {
+                logger.LogError(e.Message, e);
+                context.Response.StatusCode = (int)HttpStatusCode.NotFound;
+            }
             catch(UserNotFoundException e)
             {
                 logger.LogError(e.Message, e);
