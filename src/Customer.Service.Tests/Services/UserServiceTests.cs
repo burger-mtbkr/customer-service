@@ -22,7 +22,7 @@ namespace Customer.Service.UnitTests.Services
             LastName = "TestSurname",
             Password = "password",
             Salt = "passwordSaltString",
-            CreatedDate = DateTime.UtcNow,
+            CreatedDateUtc = DateTime.UtcNow,
         };
 
         private readonly IEnumerable<UserModel> _users = new List<UserModel>
@@ -35,7 +35,7 @@ namespace Customer.Service.UnitTests.Services
                 LastName = "TestSurname",
                 Password = "password",
                 Salt = "passwordSaltString",
-                CreatedDate = DateTime.UtcNow,
+                CreatedDateUtc = DateTime.UtcNow,
             },
             new UserModel
             {
@@ -45,7 +45,7 @@ namespace Customer.Service.UnitTests.Services
                 LastName = "UserTestSurname",
                 Password = "foo_bar_fred",
                 Salt = "ate_some_bread",
-                CreatedDate = DateTime.UtcNow,
+                CreatedDateUtc = DateTime.UtcNow,
             },
         };
 
@@ -215,7 +215,7 @@ namespace Customer.Service.UnitTests.Services
             Assert.Equal(_mockUser.LastName, result.LastName);
             Assert.Equal(_mockUser.Password, result.Password);
             Assert.Equal(_mockUser.Salt, result.Salt);
-            Assert.Equal(_mockUser.CreatedDate, result.CreatedDate);
+            Assert.Equal(_mockUser.CreatedDateUtc, result.CreatedDateUtc);
 
             _mockUserRepository.Verify(r => r.GetUser(_mockUserId), Times.Once);
         }
@@ -336,7 +336,7 @@ namespace Customer.Service.UnitTests.Services
             Assert.Equal(_mockUser.LastName, result.LastName);
             Assert.Equal(_mockUser.Password, result.Password);
             Assert.Equal(_mockUser.Salt, result.Salt);
-            Assert.Equal(_mockUser.CreatedDate, result.CreatedDate);
+            Assert.Equal(_mockUser.CreatedDateUtc, result.CreatedDateUtc);
 
             _mockUserRepository.Verify(r => r.GetUserByEmail(_mockUser.Email), Times.Once);
         }

@@ -36,7 +36,7 @@ namespace Customer.Service.Controllers
             }
 
             // Create the new user
-            var user = await _userService.CreateUserAsync(model);            
+            var user = await _userService.CreateUserAsync(model);
 
             // create the session for the user			
             var sessionInfo = await _sessionService.CreateSession(user.Id);

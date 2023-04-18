@@ -13,7 +13,7 @@
             LastName = "TestSurname",
             Password = "password",
             Salt = "passwordSaltString",
-            CreatedDate = DateTime.UtcNow,
+            CreatedDateUtc = DateTime.UtcNow,
         };
 
         private readonly IEnumerable<UserModel> _users = new List<UserModel>
@@ -26,7 +26,7 @@
                 LastName = "TestSurname",
                 Password = "password",
                 Salt = "passwordSaltString",
-                CreatedDate = DateTime.UtcNow,
+                CreatedDateUtc = DateTime.UtcNow,
             },
             new UserModel
             {
@@ -36,7 +36,7 @@
                 LastName = "UserTestSurname",
                 Password = "foo_bar_fred",
                 Salt = "ate_some_bread",
-                CreatedDate = DateTime.UtcNow,
+                CreatedDateUtc = DateTime.UtcNow,
             },
         };
 

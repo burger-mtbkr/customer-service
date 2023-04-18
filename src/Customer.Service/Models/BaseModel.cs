@@ -3,6 +3,6 @@
     public record BaseModel
     {
         public string Id { get; init; }
-        public DateTime CreatedDate { get; set; }
+        public DateTime CreatedDateUtc { get; set; }
     }
 }

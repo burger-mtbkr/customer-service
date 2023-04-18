@@ -14,7 +14,7 @@
             Email = Email,
             FirstName = FirstName,
             LastName = LastName,
-            CreatedDate = CreatedDate
+            CreatedDateUtc = CreatedDateUtc
         };
     }
 

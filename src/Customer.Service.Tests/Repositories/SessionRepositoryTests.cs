@@ -15,7 +15,7 @@ namespace Customer.Service.UnitTests.Repositories
             new Session
             {
                 Id = Guid.NewGuid().ToString(),
-                CreatedDate = DateTime.UtcNow,
+                CreatedDateUtc = DateTime.UtcNow,
                 Token = Guid.NewGuid().ToString(),
                 UserEmail = "some.test@user.com",
                 UserId = Guid.NewGuid().ToString(),
@@ -23,7 +23,7 @@ namespace Customer.Service.UnitTests.Repositories
             },
             new Session {
                 Id = "C51989A0-4D7B-4532-A05C-3851ABE24206",
-                CreatedDate = DateTime.UtcNow,
+                CreatedDateUtc = DateTime.UtcNow,
                 Token = "boohoo123456778",
                 UserEmail = "some.test@user.com",
                 UserId = "B15A0836-BCBF-49DC-83E7-0F9D962C2A79",
@@ -44,7 +44,7 @@ namespace Customer.Service.UnitTests.Repositories
             var sessionObject = new Session
             {
                 Id = "C51989A0-4D7B-4532-A05C-3851ABE24206",
-                CreatedDate = DateTime.UtcNow,
+                CreatedDateUtc = DateTime.UtcNow,
                 Token = "boohoo123456778",
                 UserEmail = "some.test@user.com",
                 UserId = "B15A0836-BCBF-49DC-83E7-0F9D962C2A79",

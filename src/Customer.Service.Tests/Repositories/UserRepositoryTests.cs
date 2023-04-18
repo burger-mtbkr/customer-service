@@ -19,7 +19,7 @@ namespace Customer.Service.UnitTests.Repositories
                 LastName = "TestSurname",
                 Password = "password",
                 Salt = "passwordSaltString",
-                CreatedDate = DateTime.UtcNow,
+                CreatedDateUtc = DateTime.UtcNow,
             },
             new UserModel
             {
@@ -29,7 +29,7 @@ namespace Customer.Service.UnitTests.Repositories
                 LastName = "UserTestSurname",
                 Password = "foo_bar_fred",
                 Salt = "ate_some_bread",
-                CreatedDate = DateTime.UtcNow,
+                CreatedDateUtc = DateTime.UtcNow,
             },
         };
 
@@ -71,7 +71,7 @@ namespace Customer.Service.UnitTests.Repositories
                 LastName = "TestSurname",
                 Password = "password",
                 Salt = "passwordSaltString",
-                CreatedDate = DateTime.UtcNow,
+                CreatedDateUtc = DateTime.UtcNow,
             };
 
             var sessionRepo = new UserRepository(_collection.Object);
@@ -118,7 +118,7 @@ namespace Customer.Service.UnitTests.Repositories
                 LastName = "TestSurname",
                 Password = "password",
                 Salt = "passwordSaltString",
-                CreatedDate = DateTime.UtcNow,
+                CreatedDateUtc = DateTime.UtcNow,
             };
             _collection.Setup(c => c.AsQueryable()).Returns(new List<UserModel> { editedUser });
 
@@ -139,7 +139,7 @@ namespace Customer.Service.UnitTests.Repositories
                 LastName = "TestSurname",
                 Password = "password",
                 Salt = "passwordSaltString",
-                CreatedDate = DateTime.UtcNow,
+                CreatedDateUtc = DateTime.UtcNow,
             };
             _collection.Setup(c => c.AsQueryable()).Returns(new List<UserModel>());
 

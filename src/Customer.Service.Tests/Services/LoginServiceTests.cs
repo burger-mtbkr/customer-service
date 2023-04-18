@@ -75,7 +75,7 @@ namespace Customer.Service.UnitTests.Services
                 Email = "test@email.com",
                 FirstName = "Test",
                 LastName = "Test",
-                CreatedDate = DateTime.UtcNow,
+                CreatedDateUtc = DateTime.UtcNow,
                 Password = "password",
                 Salt = "86876876"
             };
@@ -131,7 +131,7 @@ namespace Customer.Service.UnitTests.Services
                 Email = "test@email.com",
                 FirstName = "Test",
                 LastName = "Test",
-                CreatedDate = DateTime.UtcNow,
+                CreatedDateUtc = DateTime.UtcNow,
                 Password = "password",
                 Salt = "86876876"
             };
