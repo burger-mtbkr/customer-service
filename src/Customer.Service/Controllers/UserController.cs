@@ -27,7 +27,7 @@ namespace Customer.Service.Controllers
         public ActionResult<IEnumerable<UserResponse>> Get()
         {
             var result = _userService.GetAllUsers();
-            return Ok(result.Select(r=> r.Response));
+            return Ok(result);
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace Customer.Service.Controllers
         public ActionResult<UserResponse> Get(string id)
         {
             var user = _userService.GetUser(id);
-            return Ok(user.Response);
+            return Ok(user);
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace Customer.Service.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(UserNotFoundException), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(ArgumentNullException), StatusCodes.Status400BadRequest)]     
+        [ProducesResponseType(typeof(ArgumentNullException), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> Put(string id, [FromBody] UserModel model)
         {
             await _userService.EditUserAsync(id, model);

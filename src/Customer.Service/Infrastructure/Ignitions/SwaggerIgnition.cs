@@ -19,7 +19,6 @@ namespace Customer.Service.Ignitions
                         Url = new Uri(builder.Configuration["SwaggerUI:Licence:Url"]!)
                     },
                 });
-                options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "customer_service.xml"));
                 options.IgnoreObsoleteActions();
                 options.IgnoreObsoleteProperties();
                 options.OrderActionsBy(a => a.HttpMethod);
@@ -42,10 +41,10 @@ namespace Customer.Service.Ignitions
                         new[] { "readAccess", "writeAccess" }
                     }
                 });
-              
+
                 options.DescribeAllParametersInCamelCase();
                 options.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
-             
+                options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "customer_service.xml"));
             });
         }
     }

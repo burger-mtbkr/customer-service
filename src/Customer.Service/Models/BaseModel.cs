@@ -2,7 +2,7 @@
 {
     public record BaseModel
     {
-        public string Id { get; init; }
-        public DateTime CreatedDateUtc { get; set; }
+        public string? Id { get; set; }
+        public DateTime? CreatedDateUtc { get; set; }
     }
 }

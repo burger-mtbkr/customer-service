@@ -32,7 +32,7 @@ namespace Customer.Service.Controllers
                 return BadRequest("Email or password has not been provoded");
             }
 
-            var token = await _loginService.Login(request);          
+            var token = await _loginService.Login(request);
             return Created("/api/login", token);
         }
 

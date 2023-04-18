@@ -15,7 +15,7 @@ namespace Customer.Service.Services
         {
             _configuration = configuration;
             _userRepository = userRepository;
-            _passwordHash = passwordHash;           
+            _passwordHash = passwordHash;
         }
 
         public bool CheckEmailAvailability(string email)
