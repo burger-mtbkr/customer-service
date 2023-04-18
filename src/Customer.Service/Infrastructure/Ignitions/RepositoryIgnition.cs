@@ -9,6 +9,7 @@ namespace Customer.Service.Ignition
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ISessionRepository, SessionRepository>();
             services.AddScoped<ICustomerRepository, CustomerRepository>();
+            services.AddScoped<ILeadRepository, LeadRepository>();
         }
     }
 }
