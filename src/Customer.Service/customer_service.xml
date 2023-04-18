@@ -1,0 +1,407 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Customer.Service</name>
+    </assembly>
+    <members>
+        <member name="M:Customer.Service.Controllers.LoginController.Post(Customer.Service.Models.LoginRequest)">
+            <summary>
+            Login returns a new session token
+            </summary>
+            <param name="request"></param>
+        </member>
+        <member name="M:Customer.Service.Controllers.LoginController.Delete">
+            <summary>
+            Logout - deletes the session
+            </summary>
+        </member>
+        <member name="M:Customer.Service.Controllers.SessionController.Get">
+            <summary>
+            Returns all sessions
+            </summary>
+        </member>
+        <member name="M:Customer.Service.Controllers.SessionController.Get(System.String)">
+            <summary>
+            Gets a single session by id
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Customer.Service.Controllers.SessionController.Delete(System.String)">
+            <summary>
+            Delete a session by id
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Customer.Service.Controllers.SessionController.Delete">
+            <summary>
+            deletes all sessions for current user
+            </summary>
+        </member>
+        <member name="M:Customer.Service.Controllers.SignupController.Post(Customer.Service.Models.SignupRequest)">
+            <summary>
+            Signup creates a new Login for an application
+            </summary>
+            <param name="model"></param>		
+        </member>
+        <member name="M:Customer.Service.Controllers.UserController.Get">
+            <summary>
+            Returns all users
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Customer.Service.Controllers.UserController.Get(System.String)">
+            <summary>
+            Gets a single user by id
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Customer.Service.Controllers.UserController.Put(System.String,Customer.Service.Models.UserModel)">
+            <summary>
+            Edit a user
+            </summary>
+            <param name="id"></param>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Customer.Service.Controllers.UserController.Delete(System.String)">
+            <summary>
+            Delete a user by id
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Customer.Service.Controllers.UserController.Patch(System.String,Customer.Service.Models.PasswordChangeRequest)">
+            <summary>
+            Change Password for a user
+            </summary>
+            <param name="id"></param>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Customer.Service.Infrastructure.Auth.IPasswordHash.CreateSaltedPassword(System.String,System.String)">
+            <summary>
+            Hash Password with Salt.
+            </summary>
+            <param name="password"></param>
+            <param name="salt"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Customer.Service.Infrastructure.Auth.IPasswordHash.CompareByteArrayStrings(System.String,System.String)">
+            <summary>
+            Compare Byte Arrays in String format
+            </summary>
+            <param name="str1"></param>
+            <param name="str2"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Customer.Service.Infrastructure.Auth.IPasswordHash.CompareByteArrays(System.Byte[],System.Byte[])">
+            <summary>
+            Compares to byte[] if they are equal
+            </summary>
+            <param name="array1"></param>
+            <param name="array2"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Customer.Service.Infrastructure.Auth.IPasswordHash.StringToByteArray(System.String)">
+            <summary>
+            Convert string to byte array
+            </summary>
+            <param name="str"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Customer.Service.Infrastructure.Auth.IPasswordHash.ByteArrayToString(System.Byte[])">
+            <summary>
+            Convert string to byte array
+            </summary>
+            <param name="bytes"></param>
+            <returns></returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:Customer.Service.Infrastructure.Auth.PasswordHash" -->
+        <member name="M:Customer.Service.Infrastructure.Auth.PasswordHash.CreateSaltedPassword(System.String,System.String)">
+            <summary>
+            Hash Password with Salt.
+            </summary>
+            <param name="password"></param>
+            <param name="salt"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Customer.Service.Infrastructure.Auth.PasswordHash.CompareByteArrayStrings(System.String,System.String)">
+            <summary>
+            Compare Byte Arrays in String format
+            </summary>
+            <param name="str1"></param>
+            <param name="str2"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Customer.Service.Infrastructure.Auth.PasswordHash.CompareByteArrays(System.Byte[],System.Byte[])">
+            <summary>
+            Compares to byte[] if they are equal
+            </summary>
+            <param name="array1"></param>
+            <param name="array2"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Customer.Service.Infrastructure.Auth.PasswordHash.StringToByteArray(System.String)">
+            <summary>
+            Convert string to byte array
+            </summary>
+            <param name="str"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Customer.Service.Infrastructure.Auth.PasswordHash.ByteArrayToString(System.Byte[])">
+            <summary>
+            Convert string to byte array
+            </summary>
+            <param name="bytes"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Customer.Service.Infrastructure.Auth.PasswordHash.GenerateSaltedHash(System.String,System.String)">
+            <summary>
+            Generate Salted Hash
+            </summary>
+            <param name="plainText"></param>
+            <param name="salt"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Customer.Service.Infrastructure.Auth.TokenHelper.CreateJwtToken(Microsoft.Extensions.Configuration.IConfiguration,Customer.Service.Models.UserModel)">
+            <summary>
+            Gets the JwtSecurityToken
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Customer.Service.Infrastructure.Auth.TokenHelper.ReadJwtToken(System.String)">
+            <summary>
+            Gets the JwtSecurityToken from the encoded accessToken
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Customer.Service.Infrastructure.Auth.TokenHelper.IsActive(System.String)">
+            <summary>
+            Checks accessToken expiry date
+            </summary>		
+            <param name="tokenString"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Customer.Service.Infrastructure.Auth.TokenHelper.GetTokenUserId(System.String)">
+            <summary>
+            Get User Id out of accessToken
+            </summary>
+            <param name="accessToken"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Customer.Service.Infrastructure.Auth.TokenHelper.GetTokenPayload``1(System.String,System.String)">
+            <summary>
+            Get Token Payload of Type T
+            </summary>
+            <param name="tokenString"></param>
+            <param name="key"></param>
+        </member>
+        <member name="M:Customer.Service.Infrastructure.Auth.TokenHelper.GetBearerToken(Microsoft.AspNetCore.Http.HttpRequest)">
+            <summary>
+            
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Customer.Service.Repositories.ISessionRepository.GetAll">
+            <summary>
+            Get all Sessions
+            </summary>    
+            <returns></returns>
+        </member>
+        <member name="M:Customer.Service.Repositories.ISessionRepository.CreateSession(Customer.Service.Models.Session)">
+            <summary>
+            Stores the Session in the DB
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Customer.Service.Repositories.ISessionRepository.DeleteSession(System.String)">
+            <summary>
+            Deletes a session object
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Customer.Service.Repositories.ISessionRepository.DeleteCurrentSession(System.String)">
+            <summary>
+            Delete session by token
+            </summary>
+            <param name="accessToken"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Customer.Service.Repositories.ISessionRepository.DeleteAllSessionForUser(System.String)">
+            <summary>
+            Delete all sessions for a user
+            </summary>
+            <param name="userId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Customer.Service.Repositories.ISessionRepository.GetSession(System.String)">
+            <summary>
+            Get  session by id
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Customer.Service.Repositories.IUserRepository.GetAllUsers">
+            <summary>
+            Get all users for application
+            </summary>        
+            <returns></returns>
+        </member>
+        <member name="M:Customer.Service.Repositories.IUserRepository.GetUser(System.String)">
+            <summary>
+            Get User
+            </summary>
+            <param name="id"></param>        
+            <returns></returns>
+        </member>
+        <member name="M:Customer.Service.Repositories.IUserRepository.GetUserByEmail(System.String)">
+            <summary>
+            Get User By Email
+            </summary>
+            <param name="email"></param>        
+            <returns></returns>
+        </member>
+        <member name="M:Customer.Service.Repositories.IUserRepository.CreateUserAsync(Customer.Service.Models.UserModel)">
+            <summary>
+            Stores the Session in the DB
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Customer.Service.Repositories.IUserRepository.EditUserAsync(Customer.Service.Models.UserModel)">
+            <summary>
+            EDIT an existing user - TODO
+            </summary>
+            <param name="model"></param>        
+            <returns></returns>
+        </member>
+        <member name="M:Customer.Service.Repositories.IUserRepository.DeleteUserAsync(System.String)">
+            <summary>
+            Marks a user as deleted
+            Marks any user sessions as expired
+            Marks any Assigned Application as Deleted
+            </summary>
+            <param name="id"></param>        
+            <returns></returns>
+        </member>
+        <member name="M:Customer.Service.Repositories.IUserRepository.CheckEmailAvailability(System.String)">
+            <summary>
+            Validate that a user email is available for use
+            </summary>
+            <param name="email"></param>        
+            <returns></returns>
+        </member>
+        <member name="M:Customer.Service.Services.ISessionService.GetAll">
+            <summary>
+            Get all Sessions
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Customer.Service.Services.ISessionService.GetSession(System.String)">
+            <summary>
+            Get session By token
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Customer.Service.Services.ISessionService.CreateSession(System.String)">
+            <summary>
+            Stores the Session in the DB
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Customer.Service.Services.ISessionService.DeleteSession(System.String)">
+            <summary>
+            Deletes a session object
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Customer.Service.Services.ISessionService.DeleteCurrentSession">
+            <summary>
+            Delete the current session
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Customer.Service.Services.ISessionService.DeleteAllSessionForCurrentUser">
+            <summary>
+            Delete all sessions for a user
+            </summary>        
+            <returns></returns>
+        </member>
+        <member name="M:Customer.Service.Services.ISessionService.IsTokenActive">
+            <summary>
+            Validates if a token is active.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Customer.Service.Services.IUserService.GetAllUsers">
+            <summary>
+            Get all users for application
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Customer.Service.Services.IUserService.GetUser(System.String)">
+            <summary>
+            Get User
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Customer.Service.Services.IUserService.GetUserByEmail(System.String)">
+            <summary>
+            Get User By Email
+            </summary>
+            <param name="email"></param> 
+            <returns></returns>
+        </member>
+        <member name="M:Customer.Service.Services.IUserService.CreateUserAsync(Customer.Service.Models.SignupRequest)">
+            <summary>
+            Stores the Session in the DB
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Customer.Service.Services.IUserService.EditUserAsync(System.String,Customer.Service.Models.UserModel)">
+            <summary>
+            EDIT an existing user
+            </summary>
+            <param name="id"></param>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Customer.Service.Services.IUserService.ChangePasswordAsync(System.String,Customer.Service.Models.PasswordChangeRequest)">
+            <summary>
+             Updates a user's password
+            </summary>
+            <param name="id"></param>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Customer.Service.Services.IUserService.DeleteUserAsync(System.String)">
+            <summary>
+            Marks a user as deleted
+            Marks any user sessions as expired
+            Marks any Assigned Application as Deleted
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Customer.Service.Services.IUserService.CheckEmailAvailability(System.String)">
+            <summary>
+            Validate that a user email is available for use
+            </summary>
+            <param name="email"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Customer.Service.Services.IUserService.ValidateUserPassword(System.String,System.String)">
+            <summary>
+            Validate User Password
+            </summary>
+            <param name="userId"></param>
+            <param name="presentedPassword"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

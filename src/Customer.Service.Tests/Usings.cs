@@ -1,0 +1,10 @@
+global using Customer.Service.Controllers;
+global using Customer.Service.Models;
+global using Customer.Service.Services;
+global using Microsoft.AspNetCore.Mvc;
+global using Moq;
+global using System;
+global using System.Collections.Generic;
+global using System.Linq;
+global using System.Threading.Tasks;
+global using Xunit;
