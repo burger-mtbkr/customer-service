@@ -1,4 +1,5 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using Customer.Service.Infrastructure.Swagger;
+using Microsoft.OpenApi.Models;
 
 namespace Customer.Service.Ignitions
 {
@@ -6,6 +7,7 @@ namespace Customer.Service.Ignitions
     {
         public static void ConfigureSwagger(this WebApplicationBuilder builder)
         {
+            builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc("v1", new OpenApiInfo
@@ -43,6 +45,7 @@ namespace Customer.Service.Ignitions
                 });
 
                 options.DescribeAllParametersInCamelCase();
+                options.SchemaFilter<SwaggerExcludeClrTypesFilter>();
                 options.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
                 options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "customer_service.xml"));
             });

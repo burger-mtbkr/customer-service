@@ -4,13 +4,12 @@ using Customer.Service.MIddleware;
 using Microsoft.OpenApi.Models;
 using Serilog;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
+
 // Swagger
-builder.Services.AddEndpointsApiExplorer();
 builder.ConfigureSwagger();
 
 builder.ConfigureAuthentication();
