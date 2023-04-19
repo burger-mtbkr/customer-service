@@ -1,6 +1,5 @@
 ﻿using Customer.Service.Infrastructure.Auth;
 using Customer.Service.Services;
-using Customer.Service.Tests.Services;
 
 namespace Customer.Service.Ignition
 {

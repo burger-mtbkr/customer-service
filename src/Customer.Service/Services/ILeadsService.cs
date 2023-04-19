@@ -1,6 +1,6 @@
 ﻿using Customer.Service.Models;
 
-namespace Customer.Service.Tests.Services
+namespace Customer.Service.Services
 {
     public interface ILeadsService
     {

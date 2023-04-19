@@ -1,6 +1,4 @@
-﻿using Castle.Core.Resource;
-
-namespace Customer.Service.Tests.Services
+﻿namespace Customer.Service.Tests.Services
 {
     public class LeadsServicesTests: IDisposable
     {

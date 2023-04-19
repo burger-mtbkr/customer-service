@@ -1,7 +1,6 @@
 ﻿using Customer.Service.Exceptions;
 using Customer.Service.Models;
 using Customer.Service.Repositories;
-using Customer.Service.Tests.Services;
 
 namespace Customer.Service.Services
 {
