@@ -10,6 +10,9 @@ This is a .Net 7 API with a swagger ui utilising a [JsonFlatFileDataStore](https
   - The image will be published to [docker hub](https://hub.docker.com/repository/docker/loanburger/customer-service/general)
   - The image will be published as a github [package](https://github.com/orgs/burger-mtbkr/packages?repo_name=customer-service)
 
+
+**Production url:** http://customerservice-dev.eba-rm6agvep.ap-southeast-2.elasticbeanstalk.com/swagger
+
 ### 1. How to test the api:
 
 **Using docker:**
@@ -35,9 +38,7 @@ This is a .Net 7 API with a swagger ui utilising a [JsonFlatFileDataStore](https
 - Enter: `Bearer <token>`.  `<token>` being what was returned from your `/api/signup` request.
 - After you have authenticated you can start creating customers then leads.
 
-
 **Notes**:
 
 - You only need to signup once - after that you can use the `api/login` endpoint to request a new token if required.
 - If you prefer not to use Swagger I have included a [postman collection](/src//Postman/Customer%20Service.postman_collection.json) for the api.
-- :warning: If your also running the SPA make sure the port for the api matches that what you have configured in the SPA's environmental variable file.

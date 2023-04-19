@@ -1,5 +1,8 @@
 ## Future improvements to consider💡
 
+**Development experience**
+- Setup local reverse proxy to make it easier  for the SPA and API to both run on localhost
+
 **Feature improvements:**
 
 - For this assessment I have not included server side searching and filtering but it would be a good addition to add if we extend this it include pagination or want to limit the results being returned.  I will handle that requirement in the SPA.
@@ -19,6 +22,7 @@
 - Currently there are some key and potential sensitive data in the `appsettings.json` file.  These should be moved to something like AWS parameter store.  We can then retrieve these settings in the pipeline at the time of deployment and populate them either into the `appsettings.json`
 - Encryption can be turned on in the `JsonFlatFileDataStore` datastore or we can consider upgrading to something like SQL Server
 - Export of customer and leads will be useful.
+- Enable allowed domains (cors)
 
 **Observability:**
 
