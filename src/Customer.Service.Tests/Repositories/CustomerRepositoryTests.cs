@@ -80,8 +80,8 @@
         {
             _collection.Setup(c => c.AsQueryable()).Returns(_mockCustomerList);
 
-            var sessionRepo = new CustomerRepository(_collection.Object);
-            var result = sessionRepo.GetCustomerByID("1");
+            var customerRepo = new CustomerRepository(_collection.Object);
+            var result = customerRepo.GetCustomerByID("1");
 
             Assert.NotNull(result);
             Assert.IsAssignableFrom<CustomerModel>(result);
@@ -93,8 +93,8 @@
         {
             _collection.Setup(c => c.AsQueryable()).Returns(_mockCustomerList);
 
-            var sessionRepo = new CustomerRepository(_collection.Object);
-            var result = sessionRepo.GetCustomerByID("10");
+            var customerRepo = new CustomerRepository(_collection.Object);
+            var result = customerRepo.GetCustomerByID("10");
 
             Assert.Null(result);
             _collection.Verify(c => c.AsQueryable(), Times.Once());

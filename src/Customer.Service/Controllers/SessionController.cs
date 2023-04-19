@@ -41,6 +41,17 @@ namespace Customer.Service.Controllers
             var sessions = _sessionService.GetSession(id);
             return Ok(sessions);
         }
+        
+        /// <summary>
+        /// Validated if current token is still active
+        /// </summary>
+        [HttpGet("active")]
+        [ProducesResponseType(typeof(IEnumerable<Session>), StatusCodes.Status200OK)]
+        public ActionResult<bool> IsTokenActive()
+        {
+            var sessions = _sessionService.IsTokenActive();
+            return Ok(true);
+        }
 
         /// <summary>
         /// Delete a session by id

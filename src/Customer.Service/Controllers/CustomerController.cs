@@ -1,5 +1,4 @@
-﻿using Customer.Service.Exceptions;
-using Customer.Service.Models;
+﻿using Customer.Service.Models;
 using Customer.Service.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

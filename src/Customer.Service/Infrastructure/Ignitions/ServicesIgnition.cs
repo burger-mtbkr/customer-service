@@ -15,6 +15,7 @@ namespace Customer.Service.Ignition
             services.AddScoped<ISessionService, SessionService>();
             services.AddScoped<ILoginService, LoginService>();
             services.AddScoped<ICustomerService, CustomerService>();
+            services.AddScoped<ILeadsService, LeadsService>();
         }
     }
 }
