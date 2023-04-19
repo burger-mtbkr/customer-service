@@ -16,7 +16,7 @@ This is a .Net 7 API with a swagger ui utilising a [JsonFlatFileDataStore](https
 
 - The api is published to a repository in docker.
 - The image can be pulled down using: `docker pull loanburger/customer-service:latest`
-- Once you have pulled down the api, run it locally using `docker run -p <port>:80 loanburger/customer-service:latest`
+- Once you have pulled down the api, run it locally using `docker run -p 32780:80 loanburger/customer-service:latest`
 
 **Local debugging:**
 
@@ -28,7 +28,7 @@ This is a .Net 7 API with a swagger ui utilising a [JsonFlatFileDataStore](https
 **Initial steps:**
 
 - :lock: Our api is secured so you will need to signup to it.  
-- :eyes: Browse the swagger page using: https://localhost:<port>/swagger/index.html
+- :eyes: Browse the swagger page using: http://localhost:32780/swagger/index.html
 - Go the `/api/signup` POST method and signup.
 - After signing up you will receive a token in the response of your request
 - Scroll to the top of the page and click the green Authorize button
