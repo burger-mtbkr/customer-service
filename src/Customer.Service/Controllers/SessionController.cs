@@ -18,64 +18,13 @@ namespace Customer.Service.Controllers
         }
 
         /// <summary>
-        /// Returns all sessions
-        /// </summary>
-        [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<Session>), StatusCodes.Status200OK)]
-        public ActionResult<IEnumerable<Session>> Get()
-        {
-            var sessions = _sessionService.GetAll();
-            return Ok(sessions);
-        }
-
-        /// <summary>
-        /// Gets a single session by id
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [HttpGet("{id}")]
-        [ProducesResponseType(typeof(Session), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public ActionResult<Session> Get(string id)
-        {
-            var sessions = _sessionService.GetSession(id);
-            return Ok(sessions);
-        }
-        
-        /// <summary>
         /// Validated if current token is still active
         /// </summary>
         [HttpGet("active")]
         [ProducesResponseType(typeof(IEnumerable<Session>), StatusCodes.Status200OK)]
         public ActionResult<bool> IsTokenActive()
         {
-            var sessions = _sessionService.IsTokenActive();
-            return Ok(true);
-        }
-
-        /// <summary>
-        /// Delete a session by id
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [HttpDelete("{id}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Delete(string id)
-        {
-            await _sessionService.DeleteSession(id);
-            return NoContent();
-        }
-
-        /// <summary>
-        /// deletes all sessions for current user
-        /// </summary>
-        [HttpDelete()]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<IActionResult> Delete()
-        {
-            await _sessionService.DeleteAllSessionForCurrentUser();
-            return NoContent();
+            return Ok(_sessionService.IsTokenActive());
         }
     }
 }

@@ -40,22 +40,10 @@ namespace Customer.Service.Repositories
             return model;
         }
 
-        public IEnumerable<UserModel> GetAllUsers()
-        {
-            return _collection.AsQueryable();
-        }
-
         public UserModel? GetUserByEmail(string email)
         {
             var collection = _collection.AsQueryable();
             return collection.FirstOrDefault(c => c.Email == email);
-        }
-
-        public async Task<bool> DeleteUserAsync(string id)
-        {
-            var existinguser = GetUser(id);
-            if(existinguser == null) throw new UserNotFoundException($"User not found for id {id}");
-            return await _collection.DeleteOneAsync(existinguser);
         }
     }
 }

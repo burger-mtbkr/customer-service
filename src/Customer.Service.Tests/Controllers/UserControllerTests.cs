@@ -46,56 +46,6 @@
         }
 
         [Fact]
-        public void Get_returns_valid_ok_response()
-        {
-            _mockUserService.Setup(s => s.GetAllUsers()).Returns(_users);
-
-            var controller = new UserController(_mockUserService.Object);
-            var response = controller.Get();
-
-            Assert.NotNull(response);
-            Assert.IsType<OkObjectResult>(response.Result);
-
-            var result = (Assert.IsType<OkObjectResult>(response.Result));
-
-            Assert.NotNull(result);
-            Assert.Equal(200, result.StatusCode);
-        }
-
-        [Fact]
-        public void Get_returns_correct_object_type()
-        {
-            _mockUserService.Setup(s => s.GetAllUsers()).Returns(_users);
-
-            var controller = new UserController(_mockUserService.Object);
-            var response = controller.Get();
-
-            Assert.NotNull(response);
-            Assert.IsType<OkObjectResult>(response.Result);
-
-            var result = (Assert.IsType<OkObjectResult>(response.Result));
-
-            Assert.NotNull(result.Value);
-            Assert.IsAssignableFrom<IEnumerable<UserModel>>(result.Value);
-        }
-
-        [Fact]
-        public void Get_returns_all_stored_users()
-        {
-            _mockUserService.Setup(s => s.GetAllUsers()).Returns(_users);
-
-            var controller = new UserController(_mockUserService.Object);
-            var response = controller.Get();
-
-            Assert.NotNull(response);
-            Assert.IsType<OkObjectResult>(response.Result);
-
-            var result = (Assert.IsType<OkObjectResult>(response.Result));
-            var items = (IEnumerable<UserModel>)result.Value!;
-            Assert.Equal(2, items.Count());
-        }
-
-        [Fact]
         public void Get_by_id_returns_valid_ok_response()
         {
             _mockUserService.Setup(s => s.GetUser(It.IsAny<string>())).Returns(_mockUser);
@@ -143,24 +93,6 @@
             var result = (Assert.IsType<OkObjectResult>(response.Result));
             var item = (UserModel)result.Value!;
             Assert.NotNull(item);
-        }
-
-        [Fact]
-        public async Task Put_returns_no_content_when_updating_a_user_by_id()
-        {
-            _mockUserService.Setup(s => s.EditUserAsync(_mockUserId, _mockUser)).ReturnsAsync(_mockUser);
-            var controller = new UserController(_mockUserService.Object);
-            var response = await controller.Put(_mockUserId, _mockUser);
-            Assert.IsType<NoContentResult>(response);
-        }
-
-        [Fact]
-        public async Task Delete_returns_no_content_when_deleting_a_user_by_id()
-        {
-            _mockUserService.Setup(s => s.DeleteUserAsync(It.IsAny<string>())).ReturnsAsync(true);
-            var controller = new UserController(_mockUserService.Object);
-            var response = await controller.Delete("id");
-            Assert.IsType<NoContentResult>(response);
         }
 
         [Fact]

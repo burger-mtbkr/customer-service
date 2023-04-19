@@ -5,12 +5,6 @@ namespace Customer.Service.Services
     public interface IUserService
     {
         /// <summary>
-        /// Get all users for application
-        /// </summary>
-        /// <returns></returns>
-        IEnumerable<UserModel> GetAllUsers();
-
-        /// <summary>
         /// Get User
         /// </summary>
         /// <param name="id"></param>
@@ -25,18 +19,11 @@ namespace Customer.Service.Services
         UserModel GetUserByEmail(string email);
 
         /// <summary>
-        /// Stores the Session in the DB
+        /// Create a user
         /// </summary>
-        /// <returns></returns>
-        Task<UserModel> CreateUserAsync(SignupRequest model);
-
-        /// <summary>
-        /// EDIT an existing user
-        /// </summary>
-        /// <param name="id"></param>
         /// <param name="model"></param>
         /// <returns></returns>
-        Task<UserModel> EditUserAsync(string id, UserModel model);
+        Task<UserModel> CreateUserAsync(SignupRequest model);
 
         /// <summary>
         ///  Updates a user's password
@@ -45,15 +32,6 @@ namespace Customer.Service.Services
         /// <param name="model"></param>
         /// <returns></returns>
         Task<bool> ChangePasswordAsync(string id, PasswordChangeRequest model);
-
-        /// <summary>
-        /// Marks a user as deleted
-        /// Marks any user sessions as expired
-        /// Marks any Assigned Application as Deleted
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        Task<bool> DeleteUserAsync(string id);
 
         /// <summary>
         /// Validate that a user email is available for use

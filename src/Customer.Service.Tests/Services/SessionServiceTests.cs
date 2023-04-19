@@ -7,29 +7,7 @@
         private readonly Mock<IUserService> _mockUserService;
         private readonly Mock<IConfiguration> _mockConfiguration;
         private readonly Mock<ITokenHelper> _mockTokenHelper;
-        private readonly RequestContext _requestContext;
-
-
-        private readonly IEnumerable<Session> _sessions = new List<Session>
-        {
-            new Session
-            {
-                Id = Guid.NewGuid().ToString(),
-                CreatedDateUtc = DateTime.UtcNow,
-                Token = Guid.NewGuid().ToString(),
-                UserEmail = "some.test@user.com",
-                UserId = Guid.NewGuid().ToString(),
-                Expiry = DateTime.UtcNow.AddHours(720),
-            },
-            new Session {
-                Id = "C51989A0-4D7B-4532-A05C-3851ABE24206",
-                CreatedDateUtc = DateTime.UtcNow,
-                Token = "boohoo123456778",
-                UserEmail = "some.test@user.com",
-                UserId = "B15A0836-BCBF-49DC-83E7-0F9D962C2A79",
-                Expiry = DateTime.UtcNow.AddHours(720),
-            }
-        };
+        private readonly RequestContext _requestContext;     
 
         public SessionServiceTests()
         {
@@ -90,67 +68,6 @@
 
             await Assert.ThrowsAsync<UserNotFoundException>(() => sessionService.CreateSession(id));
             _mockUserService.Verify(r => r.GetUser(id), Times.Once);
-        }
-
-        [Fact]
-        public async Task DeleteAllSessionForCurrentUser_calls_DeleteAllSessionForUser_on_repository_with_correct_userId()
-        {
-            var requestContext = new RequestContext
-            {
-                Token = "token",
-                UserId = "123456"
-            };
-            _mockSessionRepository.Setup(u => u.DeleteAllSessionForUser(requestContext.UserId)).ReturnsAsync(true);
-
-            var sessionService = new SessionService(requestContext, _mockTokenHelper.Object, _mockSessionRepository.Object, _mockConfiguration.Object, _mockUserService.Object);
-            var result = await sessionService.DeleteAllSessionForCurrentUser();
-
-            Assert.True(result);
-            _mockSessionRepository.Verify(r => r.DeleteAllSessionForUser(requestContext.UserId), Times.Once);
-        }
-
-        [Fact]
-        public async Task DeleteAllSessionForCurrentUser_throws_UnauthorizedAccessException_when_userId_is_null()
-        {
-            var requestContext = new RequestContext
-            {
-                Token = "token",
-            };
-
-            var sessionService = new SessionService(requestContext, _mockTokenHelper.Object, _mockSessionRepository.Object, _mockConfiguration.Object, _mockUserService.Object);
-            var result = await Assert.ThrowsAsync<UnauthorizedAccessException>(() => sessionService.DeleteAllSessionForCurrentUser());
-
-            Assert.NotNull(result);
-            Assert.Equal("Attempted to perform an unauthorized operation.", result.Message);
-        }
-
-        [Fact]
-        public async Task DeleteAllSessionForCurrentUser_throws_UnauthorizedAccessException_when_userId_is_empty()
-        {
-            var requestContext = new RequestContext
-            {
-                Token = "token",
-                UserId = ""
-            };
-
-            var sessionService = new SessionService(requestContext, _mockTokenHelper.Object, _mockSessionRepository.Object, _mockConfiguration.Object, _mockUserService.Object);
-            var result = await Assert.ThrowsAsync<UnauthorizedAccessException>(() => sessionService.DeleteAllSessionForCurrentUser());
-
-            Assert.NotNull(result);
-            Assert.Equal("Attempted to perform an unauthorized operation.", result.Message);
-        }
-
-        [Fact]
-        public async Task DeleteSession_calls_DeleteSession_on_repository_with_correct_accesToken()
-        {
-            var mockToken = "someToken";
-            _mockSessionRepository.Setup(u => u.DeleteSession(mockToken)).ReturnsAsync(true);
-
-            var sessionService = new SessionService(_requestContext, _mockTokenHelper.Object, _mockSessionRepository.Object, _mockConfiguration.Object, _mockUserService.Object);
-            var result = await sessionService.DeleteSession(mockToken);
-
-            Assert.True(result);
-            _mockSessionRepository.Verify(r => r.DeleteSession(mockToken), Times.Once);
         }
 
         [Fact]
@@ -258,18 +175,6 @@
         }
 
         [Fact]
-        public void GetAll_call_returns_all_sessions()
-        {
-            _mockSessionRepository.Setup(u => u.GetAll()).Returns(_sessions);
-            var sessionService = new SessionService(_requestContext, _mockTokenHelper.Object, _mockSessionRepository.Object, _mockConfiguration.Object, _mockUserService.Object);
-            var resultSessionObject = sessionService.GetAll();
-
-            Assert.NotNull(resultSessionObject);
-            Assert.Equal(2, resultSessionObject.Count());
-            _mockSessionRepository.Verify(r => r.GetAll(), Times.Once);
-        }
-
-        [Fact]
         public void IsTokenActive_returns_true_if_token_is_not_expired()
         {
             var requestContext = new RequestContext
@@ -315,7 +220,7 @@
 
             var sessionService = new SessionService(requestContext, _mockTokenHelper.Object, _mockSessionRepository.Object, _mockConfiguration.Object, _mockUserService.Object);
             var result = sessionService.IsTokenActive();
-            Assert.False(result);        
+            Assert.False(result);
         }
 
         public void Dispose()
