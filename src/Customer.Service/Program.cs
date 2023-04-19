@@ -54,6 +54,12 @@ app.UseSerilogRequestLogging();
 app.UseMiddleware<ErrorMiddleware>();
 app.UseMiddleware<AuthMiddleware>();
 
+app.UseCors(x => x
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        .SetIsOriginAllowed(origin => true)
+        .AllowCredentials());
+
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
