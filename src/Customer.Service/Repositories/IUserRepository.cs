@@ -5,12 +5,6 @@ namespace Customer.Service.Repositories
     public interface IUserRepository
     {
         /// <summary>
-        /// Get all users for application
-        /// </summary>        
-        /// <returns></returns>
-        IEnumerable<UserModel> GetAllUsers();
-
-        /// <summary>
         /// Get User
         /// </summary>
         /// <param name="id"></param>        
@@ -37,28 +31,11 @@ namespace Customer.Service.Repositories
         /// <returns></returns>
         Task<UserModel> EditUserAsync(UserModel model);
 
-
-        /// <summary>
-        /// Marks a user as deleted
-        /// Marks any user sessions as expired
-        /// Marks any Assigned Application as Deleted
-        /// </summary>
-        /// <param name="id"></param>        
-        /// <returns></returns>
-        Task<bool> DeleteUserAsync(string id);
-
         /// <summary>
         /// Validate that a user email is available for use
         /// </summary>
         /// <param name="email"></param>        
         /// <returns></returns>
         bool CheckEmailAvailability(string email);
-
-        /// <summary>
-        /// Updates a user's password
-        /// </summary>
-        /// <param name="model"></param>        
-        /// <returns></returns>
-        //Task<bool> ChangePassword(PasswordResetModel model);
     }
 }

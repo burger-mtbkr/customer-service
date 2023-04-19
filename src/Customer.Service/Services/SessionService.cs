@@ -6,18 +6,11 @@ using Customer.Service.Models;using Customer.Service.Repositories;namespace C
             _sessionRepository = sessionRepository;            _userService = userService;        }        public async Task<string?> CreateSession(string userId)        {            var sessionObect = CreateSessionObject(userId);
             var session = await _sessionRepository.CreateSession(sessionObect);
             return session.Token;
-        }
-
-        public async Task<bool> DeleteAllSessionForCurrentUser()        {
-            if(string.IsNullOrEmpty(_requestContext.UserId)) throw new UnauthorizedAccessException();
-            return await _sessionRepository.DeleteAllSessionForUser(_requestContext.UserId);        }        public async Task<bool> DeleteSession(string id)        {
-            return await _sessionRepository.DeleteSession(id);        }
+        }    
 
         public async Task<bool> DeleteCurrentSession()        {
             if(string.IsNullOrEmpty(_requestContext.Token)) throw new UnauthorizedAccessException();
-            return await _sessionRepository.DeleteCurrentSession(_requestContext.Token!);        }        public IEnumerable<Session> GetAll()        {
-            return _sessionRepository.GetAll();        }
-
+            return await _sessionRepository.DeleteCurrentSession(_requestContext.Token!);        }
         public Session? GetSession(string id)
         {
             return _sessionRepository.GetSession(id);

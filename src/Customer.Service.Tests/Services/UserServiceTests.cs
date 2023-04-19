@@ -18,30 +18,6 @@
             CreatedDateUtc = DateTime.UtcNow,
         };
 
-        private readonly IEnumerable<UserModel> _users = new List<UserModel>
-        {
-            new UserModel
-            {
-                Id = _mockUserId,
-                Email = "test.user@mock.com",
-                FirstName = "Test",
-                LastName = "TestSurname",
-                Password = "password",
-                Salt = "passwordSaltString",
-                CreatedDateUtc = DateTime.UtcNow,
-            },
-            new UserModel
-            {
-                Id = "81304C8F-7E5C-49E3-7756-2EA81137A18P",
-                Email = "other.user@mock.com",
-                FirstName = "Other",
-                LastName = "UserTestSurname",
-                Password = "foo_bar_fred",
-                Salt = "ate_some_bread",
-                CreatedDateUtc = DateTime.UtcNow,
-            },
-        };
-
         public UserServiceTests()
         {
             _mockPasswordHash = new Mock<IPasswordHash>();
@@ -235,97 +211,6 @@
             var service = new UserService(_mockConfiguration.Object, _mockUserRepository.Object, _mockPasswordHash.Object);
             Assert.Throws<UserNotFoundException>(() => service.GetUser(id));
             _mockUserRepository.Verify(r => r.GetUser(id), Times.Once);
-        }
-
-        [Fact]
-        public async Task EditUserAsync_calls_EditUserAsync_with_the_model()
-        {
-            _mockUserRepository.Setup(c => c.GetUser(It.IsAny<string>())).Returns(_mockUser);
-            _mockUserRepository.Setup(c => c.EditUserAsync(It.IsAny<UserModel>())).ReturnsAsync(_mockUser);
-
-            var service = new UserService(_mockConfiguration.Object, _mockUserRepository.Object, _mockPasswordHash.Object);
-            var result = await service.EditUserAsync(_mockUserId, _mockUser);
-
-            Assert.NotNull(result);
-            Assert.Equal(_mockUserId, result.Id);
-            Assert.Equal(_mockUser.Email, result.Email);
-            Assert.Equal(_mockUser.FirstName, result.FirstName);
-            Assert.Equal(_mockUser.LastName, result.LastName);
-            _mockUserRepository.Verify(r => r.EditUserAsync(It.IsAny<UserModel>()), Times.Once);
-        }
-
-        [Fact]
-        public async Task EditUserAsync_throws_UserNotFoundException_when_existing_user_is_null()
-        {
-            _mockUserRepository.Setup(c => c.GetUser(It.IsAny<string>())).Returns<UserModel>(null);
-
-            var service = new UserService(_mockConfiguration.Object, _mockUserRepository.Object, _mockPasswordHash.Object);
-            var result = await Assert.ThrowsAsync<UserNotFoundException>(() => service.EditUserAsync(_mockUserId, _mockUser));
-
-            Assert.NotNull(result);
-            Assert.Equal($"User not found for id {_mockUserId}", result.Message);
-        }
-
-        [Fact]
-        public async Task EditUserAsync_throws_ArgumentNullException_when_model_is_null()
-        {
-            var service = new UserService(_mockConfiguration.Object, _mockUserRepository.Object, _mockPasswordHash.Object);
-            var result = await Assert.ThrowsAsync<ArgumentNullException>(() => service.EditUserAsync(_mockUserId, null));
-
-            Assert.NotNull(result);
-            Assert.Equal("Value cannot be null. (Parameter 'model')", result.Message);
-        }
-
-        [Fact]
-        public async Task DeleteUser_calls_DeleteUser_on_repository_with_correct_id()
-        {
-            _mockUserRepository.Setup(u => u.GetUser(_mockUserId)).Returns(_mockUser);
-            _mockUserRepository.Setup(u => u.DeleteUserAsync(_mockUserId)).ReturnsAsync(true);
-
-            var service = new UserService(_mockConfiguration.Object, _mockUserRepository.Object, _mockPasswordHash.Object);
-            var result = await service.DeleteUserAsync(_mockUserId);
-
-            Assert.True(result);
-            _mockUserRepository.Verify(r => r.DeleteUserAsync(_mockUserId), Times.Once);
-        }
-
-        [Fact]
-        public async Task DeleteUser_throws_ArgumentNullException_when_id_is_empty()
-        {
-            var id = "";
-            _mockUserRepository.Setup(u => u.DeleteUserAsync(id)).ReturnsAsync(true);
-
-            var service = new UserService(_mockConfiguration.Object, _mockUserRepository.Object, _mockPasswordHash.Object);
-            var result = await Assert.ThrowsAsync<ArgumentNullException>(() => service.DeleteUserAsync(id));
-
-            Assert.NotNull(result);
-            Assert.Equal("Value cannot be null. (Parameter 'id')", result.Message);
-        }
-
-        [Fact]
-        public void GetAllUsers_calls_GetAllUsers_on_repository()
-        {
-            _mockUserRepository.Setup(u => u.GetAllUsers()).Returns(_users);
-
-            var service = new UserService(_mockConfiguration.Object, _mockUserRepository.Object, _mockPasswordHash.Object);
-            var result = service.GetAllUsers();
-
-            Assert.NotNull(result);
-            Assert.Equal(2, result.Count());
-            _mockUserRepository.Verify(r => r.GetAllUsers(), Times.Once);
-        }
-
-        [Fact]
-        public void GetAllUsers_returns_empty_list_when_none_are_found()
-        {
-            _mockUserRepository.Setup(u => u.GetAllUsers()).Returns(new List<UserModel>());
-
-            var service = new UserService(_mockConfiguration.Object, _mockUserRepository.Object, _mockPasswordHash.Object);
-            var result = service.GetAllUsers();
-
-            Assert.NotNull(result);
-            Assert.Empty(result);
-            _mockUserRepository.Verify(r => r.GetAllUsers(), Times.Once);
         }
 
         [Fact]

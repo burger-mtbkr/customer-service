@@ -28,7 +28,6 @@
 
         public SessionRepositoryTests()
         {
-            //_mockDataStore = new Mock<IDataStore>();
             _mockLogger = new Mock<ILogger<SessionRepository>>();
             _collection = new Mock<IDocumentCollection<Session>>();
         }
@@ -50,18 +49,6 @@
             await sessionRepo.CreateSession(sessionObject);
 
             _collection.Verify(c => c.InsertOneAsync(sessionObject), Times.Once());
-        }
-
-        [Fact]
-        public void GetAll_returns_all_stored_sessions()
-        {
-            _collection.Setup(c => c.AsQueryable()).Returns(_sessions);
-            var sessionRepo = new SessionRepository(_collection.Object, _mockLogger.Object);
-            var sessions = sessionRepo.GetAll();
-
-            Assert.NotNull(sessions);
-            Assert.Equal(2, sessions.Count());
-            _collection.Verify(c => c.AsQueryable(), Times.Once());
         }
 
         [Fact]
@@ -92,28 +79,6 @@
 
             Assert.Null(session);
             _collection.Verify(c => c.AsQueryable(), Times.Once());
-        }
-
-        [Fact]
-        public async Task DeleteAllSessionForUser_calls_DeleteManyAsync_with_provided_token()
-        {
-            var testUserId = "B15A0836-BCBF-49DC-83E7-0F9D962C2A79";
-
-            var sessionRepo = new SessionRepository(_collection.Object, _mockLogger.Object);
-            await sessionRepo.DeleteAllSessionForUser(testUserId);
-
-            _collection.Verify(c => c.DeleteManyAsync(It.IsAny<Predicate<Session>>()), Times.Once());
-        }
-
-        [Fact]
-        public async Task DeleteSession_calls_DeleteOneAsync_with_provided_token()
-        {
-            var id = "some_user_id";
-
-            var sessionRepo = new SessionRepository(_collection.Object, _mockLogger.Object);
-            await sessionRepo.DeleteSession(id);
-
-            _collection.Verify(c => c.DeleteOneAsync(It.IsAny<Predicate<Session>>()), Times.Once());
         }
 
         [Fact]

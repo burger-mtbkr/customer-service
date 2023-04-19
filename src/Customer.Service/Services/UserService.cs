@@ -64,28 +64,6 @@ namespace Customer.Service.Services
             return user;
         }
 
-        public async Task<UserModel> EditUserAsync(string id, UserModel model)
-        {
-            if(model == null) throw new ArgumentNullException(nameof(model));
-            // Get the user to ensure it exists
-            GetUser(id);
-            var result = await _userRepository.EditUserAsync(model);
-            return result;
-        }
-
-        public async Task<bool> DeleteUserAsync(string id)
-        {
-            if(string.IsNullOrEmpty(id)) throw new ArgumentNullException(nameof(id));
-            var user = GetUser(id);
-            var result = await _userRepository.DeleteUserAsync(user.Id);
-            return result;
-        }
-
-        public IEnumerable<UserModel> GetAllUsers()
-        {
-            return _userRepository.GetAllUsers();
-        }
-
         public UserModel GetUserByEmail(string email)
         {
             if(string.IsNullOrEmpty(email)) throw new ArgumentNullException(nameof(email));
@@ -119,6 +97,6 @@ namespace Customer.Service.Services
             user.Password = _passwordHash.CreateSaltedPassword(model.NewPassword, user!.Salt);
             var result = await _userRepository.EditUserAsync(user);
             return result != null;
-        }
+        }  
     }
 }

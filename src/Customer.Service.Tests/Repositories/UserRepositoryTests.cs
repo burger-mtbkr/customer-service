@@ -142,33 +142,7 @@
 
             await Assert.ThrowsAsync<UserNotFoundException>(() => userRepo.EditUserAsync(editedUser));
             _collection.Verify(r => r.AsQueryable(), Times.Once);
-        }
-
-        [Fact]
-        public void GetAllUsers_returns_all_stored_users()
-        {
-            _collection.Setup(c => c.AsQueryable()).Returns(_mockUsers);
-            var usersRepo = new UserRepository(_collection.Object);
-            var users = usersRepo.GetAllUsers();
-
-            Assert.NotNull(users);
-            Assert.IsAssignableFrom<IEnumerable<UserModel>>(users);
-            Assert.Equal(2, users.Count());
-            _collection.Verify(c => c.AsQueryable(), Times.Once());
-        }
-
-        [Fact]
-        public void GetAllUsers_returns_empty_list_when_none_are_found()
-        {
-            _collection.Setup(c => c.AsQueryable()).Returns(new List<UserModel>());
-            var usersRepo = new UserRepository(_collection.Object);
-            var users = usersRepo.GetAllUsers();
-
-            Assert.NotNull(users);
-            Assert.IsAssignableFrom<IEnumerable<UserModel>>(users);
-            Assert.Empty(users);
-            _collection.Verify(c => c.AsQueryable(), Times.Once());
-        }
+        }  
 
         [Fact]
         public void GetUserByEmail_returns_a_user_matching_a_provided_token()
@@ -198,30 +172,6 @@
 
             Assert.Null(user);
             _collection.Verify(c => c.AsQueryable(), Times.Once());
-        }
-
-        [Fact]
-        public async Task DeleteUserAsync_calls_DeleteOneAsync_with_provided_userId()
-        {
-            var id = "71204C8F-7E5C-49E3-9932-2EA81134E30E";
-            _collection.Setup(c => c.AsQueryable()).Returns(_mockUsers);
-
-            var userRepo = new UserRepository(_collection.Object);
-            await userRepo.DeleteUserAsync(id);
-
-            _collection.Verify(c => c.AsQueryable(), Times.Once());
-            _collection.Verify(c => c.DeleteOneAsync(It.IsAny<UserModel>()), Times.Once());
-        }
-
-        [Fact]
-        public async Task DeleteUserAsync_throws_UserNotFoundException_whne_user_is_not_found()
-        {
-            var id = "test-7E5C-49E3-9932-2EA81134E30E";
-            _collection.Setup(c => c.AsQueryable()).Returns(_mockUsers);
-
-            var userRepo = new UserRepository(_collection.Object);
-            await Assert.ThrowsAsync<UserNotFoundException>(() => userRepo.DeleteUserAsync(id));
-            _collection.Verify(r => r.AsQueryable(), Times.Once);
         }
 
         public void Dispose()
