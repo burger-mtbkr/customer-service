@@ -23,7 +23,7 @@ namespace Customer.Service.Services
             return await _repository.SaveCustomerAsync(model);
         }
 
-        public IEnumerable<CustomerModel> GetAllCustomers() => _repository.GetAllCustomers();
+        public IEnumerable<CustomerModel> GetAllCustomers(string searchText) => _repository.GetAllCustomers(searchText);
 
         public CustomerModel GetCustomerByID(string id)
         {

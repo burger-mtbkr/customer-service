@@ -12,7 +12,18 @@ namespace Customer.Service.Repositories
             _collection = collection;
         }
 
-        public IEnumerable<CustomerModel> GetAllCustomers() => _collection.AsQueryable();
+        public IEnumerable<CustomerModel> GetAllCustomers(string searchText)
+        {
+            var collection = _collection.AsQueryable();
+
+            if(string.IsNullOrEmpty(searchText.ToLower())) return collection;
+            return collection.Where(c =>
+            c.FirstName.ToLower().StartsWith(searchText.ToLower()) ||
+            c.LastName.ToLower().StartsWith(searchText.ToLower()) ||
+            c.Company.ToLower().StartsWith(searchText.ToLower()) ||
+            c.Email.ToLower().StartsWith(searchText.ToLower()) ||
+            c.PhoneNumber.ToLower().StartsWith(searchText.ToLower()));
+        }
 
         public CustomerModel? GetCustomerByID(string id)
         {
@@ -26,6 +37,7 @@ namespace Customer.Service.Repositories
             return model;
         }
 
-        public async Task<bool> DeleteCustomerAsync(CustomerModel customer) =>  await _collection.DeleteOneAsync(customer.Id);
+        public async Task<bool> DeleteCustomerAsync(CustomerModel customer) => await _collection.DeleteOneAsync(customer.Id);
     }
 }
+

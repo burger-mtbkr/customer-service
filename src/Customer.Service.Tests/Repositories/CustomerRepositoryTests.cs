@@ -54,7 +54,7 @@
         {
             _collection.Setup(c => c.AsQueryable()).Returns(_mockCustomerList);
             var customerRepo = new CustomerRepository(_collection.Object);
-            var result = customerRepo.GetAllCustomers();
+            var result = customerRepo.GetAllCustomers(It.IsAny<string>());
 
             Assert.NotNull(result);
             Assert.IsAssignableFrom<IEnumerable<CustomerModel>>(result);
@@ -67,7 +67,7 @@
         {
             _collection.Setup(c => c.AsQueryable()).Returns(new List<CustomerModel>());
             var customerRepo = new CustomerRepository(_collection.Object);
-            var result = customerRepo.GetAllCustomers();
+            var result = customerRepo.GetAllCustomers(It.IsAny<string>());
 
             Assert.NotNull(result);
             Assert.IsAssignableFrom<IEnumerable<CustomerModel>>(result);

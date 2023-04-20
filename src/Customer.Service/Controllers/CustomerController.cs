@@ -22,11 +22,11 @@ namespace Customer.Service.Controllers
         /// Returns all customers
         /// </summary>
         /// <returns></returns>
-        [HttpGet]
+        [HttpGet("search")]
         [ProducesResponseType(typeof(IEnumerable<CustomerModel>), StatusCodes.Status200OK)]
-        public ActionResult<IEnumerable<CustomerModel>> Get()
+        public ActionResult<IEnumerable<CustomerModel>> Search(string searchText = "")
         {
-            var result = _customerService.GetAllCustomers();
+            var result = _customerService.GetAllCustomers(searchText);
             return Ok(result);
         }
 
