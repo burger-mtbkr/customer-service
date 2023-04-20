@@ -103,9 +103,11 @@
         [Fact]
         public async Task DeleteCustomerAsync_calls_DeleteOneAsync_with_provided_customer()
         {
+            _collection.Setup(c => c.DeleteOneAsync(It.IsAny<string>())).ReturnsAsync(true);
+
             var customerRepo = new CustomerRepository(_collection.Object);
-            await customerRepo.DeleteCustomerAsync(It.IsAny<CustomerModel>());            
-            _collection.Verify(c => c.DeleteOneAsync(It.IsAny<CustomerModel>()), Times.Once());
+            await customerRepo.DeleteCustomerAsync(_mockSingleCustomer);
+            _collection.Verify(c => c.DeleteOneAsync(_mockSingleCustomer.Id), Times.Once());
         }
 
         [Fact]

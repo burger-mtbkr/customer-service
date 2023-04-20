@@ -26,6 +26,6 @@ namespace Customer.Service.Repositories
             return model;
         }
 
-        public async Task<bool> DeleteCustomerAsync(CustomerModel customer) => await _collection.DeleteOneAsync(customer);
+        public async Task<bool> DeleteCustomerAsync(CustomerModel customer) =>  await _collection.DeleteOneAsync(customer.Id);
     }
 }
