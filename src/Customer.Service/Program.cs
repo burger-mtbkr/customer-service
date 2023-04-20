@@ -6,6 +6,20 @@ using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "MyPolicy",
+        policy =>
+        {
+            policy.WithOrigins("*",                    
+                    "https://localhost:<port>",
+                    "http://localhost:<port>",
+                    "https://localhost:3000",
+                    "http://localhost:*")
+                .WithMethods("*");
+        });
+});
+
 // Add services to the container.
 builder.Services.AddControllers();
 
@@ -19,6 +33,8 @@ builder.ConfigureDataStore();
 
 builder.Services.ConfigureRepositories();
 builder.Services.ConfigureServices();
+
+builder.Services.AddCors();
 
 var app = builder.Build();
 
@@ -49,19 +65,20 @@ app.UseSwaggerUI(c =>
     c.DisplayRequestDuration();
 });
 
+app.UseHttpsRedirection();
+
+app.UseStaticFiles();
+app.UseRouting();
+
+app.UseCors("MyPolicy");
+
+app.UseAuthorization();
+
 app.UseSerilogRequestLogging();
 
 app.UseMiddleware<ErrorMiddleware>();
 app.UseMiddleware<AuthMiddleware>();
 
-app.UseCors(x => x
-        .AllowAnyMethod()
-        .AllowAnyHeader()
-        .SetIsOriginAllowed(origin => true)
-        .AllowCredentials());
-
-app.UseHttpsRedirection();
-app.UseAuthorization();
 app.MapControllers();
 
 app.Run();

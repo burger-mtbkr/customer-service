@@ -2,10 +2,12 @@
 using Customer.Service.Models;
 using Customer.Service.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Customer.Service.Controllers
 {
+    [DisableCors]
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
