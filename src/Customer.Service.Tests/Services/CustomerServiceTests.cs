@@ -52,27 +52,27 @@
         [Fact]
         public void GetAllCustomers_calls_GetAllCustomers_repository()
         {
-            _mockCustomerRepository.Setup(u => u.GetAllCustomers(It.IsAny<string>())).Returns(_mockCustomerList);
+            _mockCustomerRepository.Setup(u => u.GetAllCustomers(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>())).Returns(_mockCustomerList);
 
             var service = new CustomerService(_mockCustomerRepository.Object);
-            var result = service.GetAllCustomers(It.IsAny<string>());
+            var result = service.GetAllCustomers(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>());
 
             Assert.NotNull(result);
             Assert.Equal(3, result.Count());
-            _mockCustomerRepository.Verify(r => r.GetAllCustomers(It.IsAny<string>()), Times.Once);
+            _mockCustomerRepository.Verify(r => r.GetAllCustomers(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()), Times.Once);
         }
 
         [Fact]
         public void GetAllCustomers_returns_empty_list_when_none_are_found()
         {
-            _mockCustomerRepository.Setup(u => u.GetAllCustomers(It.IsAny<string>())).Returns(new List<CustomerModel>());
+            _mockCustomerRepository.Setup(u => u.GetAllCustomers(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>())).Returns(new List<CustomerModel>());
 
             var service = new CustomerService(_mockCustomerRepository.Object);
-            var result = service.GetAllCustomers(It.IsAny<string>());
+            var result = service.GetAllCustomers(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>());
 
             Assert.NotNull(result);
             Assert.Empty(result);
-            _mockCustomerRepository.Verify(r => r.GetAllCustomers(It.IsAny<string>()), Times.Once);
+            _mockCustomerRepository.Verify(r => r.GetAllCustomers(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()), Times.Once);
         }
 
         [Fact]

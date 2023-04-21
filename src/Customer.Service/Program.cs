@@ -6,17 +6,7 @@ using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy(name: "MyPolicy",
-        policy =>
-        {
-            policy.AllowAnyHeader()
-                .AllowAnyOrigin()
-                .SetIsOriginAllowed(c => true)
-                .AllowAnyMethod();
-        });
-});
+
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -32,7 +22,17 @@ builder.ConfigureDataStore();
 builder.Services.ConfigureRepositories();
 builder.Services.ConfigureServices();
 
-builder.Services.AddCors();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "AllowAllForAssessment",
+        policy =>
+        {
+            policy.AllowAnyHeader()
+                .AllowAnyOrigin()
+                .SetIsOriginAllowed(c => true)
+                .AllowAnyMethod();
+        });
+});
 
 var app = builder.Build();
 
@@ -68,7 +68,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
-app.UseCors("MyPolicy");
+app.UseCors("AllowAllForAssessment");
 
 app.UseAuthorization();
 

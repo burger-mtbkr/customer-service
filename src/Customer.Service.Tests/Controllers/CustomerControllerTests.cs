@@ -55,7 +55,7 @@
         [Fact]
         public void Get_returns_valid_ok_response()
         {
-            _mockCustomerService.Setup(s => s.GetAllCustomers(It.IsAny<string>())).Returns(_mockCustomerList);
+            _mockCustomerService.Setup(s => s.GetAllCustomers(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>())).Returns(_mockCustomerList);
 
             var controller = new CustomerController(_mockCustomerService.Object);
             var response = controller.Get(It.IsAny<string>());
@@ -72,7 +72,7 @@
         [Fact]
         public void Get_returns_correct_object_type()
         {
-            _mockCustomerService.Setup(s => s.GetAllCustomers(It.IsAny<string>())).Returns(_mockCustomerList);
+            _mockCustomerService.Setup(s => s.GetAllCustomers(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>())).Returns(_mockCustomerList);
 
             var controller = new CustomerController(_mockCustomerService.Object);
             var response = controller.Search(It.IsAny<string>());
@@ -89,7 +89,7 @@
         [Fact]
         public void Get_returns_all_stored_customers()
         {
-            _mockCustomerService.Setup(s => s.GetAllCustomers(It.IsAny<string>())).Returns(_mockCustomerList);
+            _mockCustomerService.Setup(s => s.GetAllCustomers(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), null)).Returns(_mockCustomerList);
 
             var controller = new CustomerController(_mockCustomerService.Object);
             var response = controller.Search(It.IsAny<string>());

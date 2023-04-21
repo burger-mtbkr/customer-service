@@ -1,4 +1,4 @@
-﻿namespace Customer.Service.UnitTests.Controllers
+﻿namespace Customer.Service.Tests.Controllers
 {
     public class UserControllerTests: IDisposable
     {
