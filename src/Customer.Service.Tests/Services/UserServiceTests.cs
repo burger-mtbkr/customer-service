@@ -1,4 +1,4 @@
-﻿namespace Customer.Service.UnitTests.Services
+﻿namespace Customer.Service.Tests.Services
 {
     public class UserServiceTests: IDisposable
     {

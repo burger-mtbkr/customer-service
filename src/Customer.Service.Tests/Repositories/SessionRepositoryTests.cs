@@ -1,4 +1,4 @@
-﻿namespace Customer.Service.UnitTests.Repositories
+﻿namespace Customer.Service.Tests.Repositories
 {
     public class SessionRepositoryTests: IDisposable
     {

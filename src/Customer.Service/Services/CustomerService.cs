@@ -1,6 +1,7 @@
 ﻿using Customer.Service.Exceptions;
 using Customer.Service.Models;
 using Customer.Service.Repositories;
+using System.Globalization;
 
 namespace Customer.Service.Services
 {
@@ -23,7 +24,7 @@ namespace Customer.Service.Services
             return await _repository.SaveCustomerAsync(model);
         }
 
-        public IEnumerable<CustomerModel> GetAllCustomers(string searchText) => _repository.GetAllCustomers(searchText);
+        public IEnumerable<CustomerModel> GetAllCustomers(GetUsersRequest request) => _repository.GetAllCustomers(request);
 
         public CustomerModel GetCustomerByID(string id)
         {

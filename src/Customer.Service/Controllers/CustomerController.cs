@@ -3,6 +3,7 @@ using Customer.Service.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using System.Xml.XPath;
 
 namespace Customer.Service.Controllers
 {
@@ -24,9 +25,9 @@ namespace Customer.Service.Controllers
         /// <returns></returns>
         [HttpGet("search")]
         [ProducesResponseType(typeof(IEnumerable<CustomerModel>), StatusCodes.Status200OK)]
-        public ActionResult<IEnumerable<CustomerModel>> Search(string searchText = "")
+        public ActionResult<IEnumerable<CustomerModel>> Search([FromQuery] GetUsersRequest request)
         {
-            var result = _customerService.GetAllCustomers(searchText);
+            var result = _customerService.GetAllCustomers(request);
             return Ok(result);
         }
 
