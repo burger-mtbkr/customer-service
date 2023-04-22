@@ -90,6 +90,15 @@
             _collection.Verify(c => c.ReplaceOneAsync(_mockLeads.First().Id, _mockLeads.First(), true), Times.Once());
         }
 
+        [Fact]
+        public async Task DeleteAllAsync_calls_DeleteAllAsync_on_collection_with_predicate()
+        {
+            var id = Guid.NewGuid().ToString();
+            var leadsRepository = new LeadRepository(_collection.Object);
+            var result = await leadsRepository.DeleteAllAsync(id);
+            _collection.Verify(c => c.DeleteManyAsync(It.IsAny<Predicate<LeadModel>>()), Times.Once());
+        }
+
         public void Dispose()
         {
             _collection.Reset();

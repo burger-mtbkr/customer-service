@@ -10,5 +10,6 @@ namespace Customer.Service.Models
         public string Email { get; init; }
         public string PhoneNumber { get; init; }
         public CustomerStatus? Status { get; set; }
+        public int LeadCount { get; set; }
     }
 }

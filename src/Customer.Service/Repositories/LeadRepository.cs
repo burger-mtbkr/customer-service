@@ -1,5 +1,6 @@
 ﻿using Customer.Service.Models;
 using JsonFlatFileDataStore;
+using System.Reflection;
 
 namespace Customer.Service.Repositories
 {
@@ -27,6 +28,11 @@ namespace Customer.Service.Repositories
         {
             await _collection.ReplaceOneAsync(model.Id, model, true);
             return model;
+        }
+
+        public async  Task<bool> DeleteAllAsync(string customerId)
+        {
+            return await _collection.DeleteManyAsync(l=> l.CustomerId == customerId);
         }
     }
 }

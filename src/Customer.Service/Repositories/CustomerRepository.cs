@@ -1,7 +1,6 @@
 ﻿using Customer.Service.Enums;
 using Customer.Service.Models;
 using JsonFlatFileDataStore;
-using System.Globalization;
 
 namespace Customer.Service.Repositories
 {
@@ -13,7 +12,7 @@ namespace Customer.Service.Repositories
             _collection = collection;
         }
 
-        public IEnumerable<CustomerModel> GetAllCustomers(GetUsersRequest request)
+        public IEnumerable<CustomerModel> GetAllCustomers(GetCustomerRequest request)
         {
             var collection = _collection.AsQueryable();
 
@@ -35,9 +34,7 @@ namespace Customer.Service.Repositories
             if(statusToFilterOn.HasValue)
             {
                 filteredList = filteredList.Where(item => item.Status == statusToFilterOn).ToList();
-            }
-
-            if(string.IsNullOrEmpty(request.SortBy)) return filteredList;
+            }          
 
             return filteredList?.Any() == true ? SortSearchData(filteredList, request.SortBy, request.SortDirection) : new List<CustomerModel>();
         }

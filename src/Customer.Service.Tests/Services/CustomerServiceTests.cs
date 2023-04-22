@@ -3,6 +3,7 @@
     public class CustomerServiceTests: IDisposable
     {
         private Mock<ICustomerRepository> _mockCustomerRepository;
+        private Mock<ILeadsService> _mockLeadsService;
 
         private readonly CustomerModel _mockSingleCustomer = new()
         {
@@ -21,6 +22,7 @@
         public CustomerServiceTests()
         {
             _mockCustomerRepository = new Mock<ICustomerRepository>();
+            _mockLeadsService = new Mock<ILeadsService>();
             _mockCustomerList = new List<CustomerModel>
             {
                 _mockSingleCustomer,
@@ -52,27 +54,27 @@
         [Fact]
         public void GetAllCustomers_calls_GetAllCustomers_repository()
         {
-            _mockCustomerRepository.Setup(u => u.GetAllCustomers(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>())).Returns(_mockCustomerList);
+            _mockCustomerRepository.Setup(u => u.GetAllCustomers(It.IsAny<GetCustomerRequest>())).Returns(_mockCustomerList);
 
-            var service = new CustomerService(_mockCustomerRepository.Object);
-            var result = service.GetAllCustomers(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>());
+            var service = new CustomerService(_mockCustomerRepository.Object, _mockLeadsService.Object);;
+            var result = service.GetAllCustomers(It.IsAny<GetCustomerRequest>());
 
             Assert.NotNull(result);
             Assert.Equal(3, result.Count());
-            _mockCustomerRepository.Verify(r => r.GetAllCustomers(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()), Times.Once);
+            _mockCustomerRepository.Verify(r => r.GetAllCustomers(It.IsAny<GetCustomerRequest>()), Times.Once);
         }
 
         [Fact]
         public void GetAllCustomers_returns_empty_list_when_none_are_found()
         {
-            _mockCustomerRepository.Setup(u => u.GetAllCustomers(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>())).Returns(new List<CustomerModel>());
+            _mockCustomerRepository.Setup(u => u.GetAllCustomers(It.IsAny<GetCustomerRequest>())).Returns(new List<CustomerModel>());
 
-            var service = new CustomerService(_mockCustomerRepository.Object);
-            var result = service.GetAllCustomers(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>());
+            var service = new CustomerService(_mockCustomerRepository.Object, _mockLeadsService.Object);;
+            var result = service.GetAllCustomers(It.IsAny<GetCustomerRequest>());
 
             Assert.NotNull(result);
             Assert.Empty(result);
-            _mockCustomerRepository.Verify(r => r.GetAllCustomers(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()), Times.Once);
+            _mockCustomerRepository.Verify(r => r.GetAllCustomers(It.IsAny<GetCustomerRequest>()), Times.Once);
         }
 
         [Fact]
@@ -80,7 +82,7 @@
         {
             _mockCustomerRepository.Setup(c => c.GetCustomerByID(_mockSingleCustomer.Id)).Returns(_mockSingleCustomer);
 
-            var service = new CustomerService(_mockCustomerRepository.Object);
+            var service = new CustomerService(_mockCustomerRepository.Object, _mockLeadsService.Object);;
             var result = service.GetCustomerByID(_mockSingleCustomer.Id);
 
             Assert.NotNull(result);
@@ -92,7 +94,7 @@
         [Fact]
         public void GetCustomerByID_throws_ArgumentNullException_when_id_is_null()
         {
-            var service = new CustomerService(_mockCustomerRepository.Object);
+            var service = new CustomerService(_mockCustomerRepository.Object, _mockLeadsService.Object);;
             var result = Assert.Throws<ArgumentNullException>(() => service.GetCustomerByID(null));
             Assert.Equal("Value cannot be null. (Parameter 'id')", result.Message);
         }
@@ -100,7 +102,7 @@
         [Fact]
         public void GetCustomerByID_throws_ArgumentNullException_when_id_is_empty()
         {
-            var service = new CustomerService(_mockCustomerRepository.Object);
+            var service = new CustomerService(_mockCustomerRepository.Object, _mockLeadsService.Object);;
             var result = Assert.Throws<ArgumentNullException>(() => service.GetCustomerByID(string.Empty));
             Assert.Equal("Value cannot be null. (Parameter 'id')", result.Message);
         }
@@ -110,7 +112,7 @@
         {
             var id = "5648787786";
             _mockCustomerRepository.Setup(c => c.GetCustomerByID(It.IsAny<string>())).Returns<CustomerModel>(null);
-            var service = new CustomerService(_mockCustomerRepository.Object);
+            var service = new CustomerService(_mockCustomerRepository.Object, _mockLeadsService.Object);;
             var result = Assert.Throws<CustomerNotFoundException>(() => service.GetCustomerByID(id));
             _mockCustomerRepository.Verify(r => r.GetCustomerByID(id), Times.Once);
             Assert.Equal($"Customer not found for id {id}", result.Message);
@@ -130,7 +132,7 @@
                 Status = Enums.CustomerStatus.ACTIVE
             };
 
-            var service = new CustomerService(_mockCustomerRepository.Object);
+            var service = new CustomerService(_mockCustomerRepository.Object, _mockLeadsService.Object);;
             var result = await Assert.ThrowsAsync<ArgumentException>(async () => await service.UpdateCustomerAsync(customerModel.Id, customerModel));
 
             Assert.NotNull(result);
@@ -151,7 +153,7 @@
                 Status = Enums.CustomerStatus.ACTIVE
             };
 
-            var service = new CustomerService(_mockCustomerRepository.Object);
+            var service = new CustomerService(_mockCustomerRepository.Object, _mockLeadsService.Object);;
             var result = await Assert.ThrowsAsync<ArgumentException>(async () => await service.UpdateCustomerAsync(customerModel.Id, customerModel));
 
             Assert.NotNull(result);
@@ -172,7 +174,7 @@
                 Status = Enums.CustomerStatus.ACTIVE
             };
 
-            var service = new CustomerService(_mockCustomerRepository.Object);
+            var service = new CustomerService(_mockCustomerRepository.Object, _mockLeadsService.Object);;
             var result = await Assert.ThrowsAsync<ArgumentException>(async () => await service.UpdateCustomerAsync(customerModel.Id, customerModel));
 
             Assert.NotNull(result);
@@ -193,7 +195,7 @@
                 Status = Enums.CustomerStatus.ACTIVE
             };
 
-            var service = new CustomerService(_mockCustomerRepository.Object);
+            var service = new CustomerService(_mockCustomerRepository.Object, _mockLeadsService.Object);;
             var result = await Assert.ThrowsAsync<ArgumentException>(async () => await service.UpdateCustomerAsync(customerModel.Id, customerModel));
 
             Assert.NotNull(result);
@@ -215,7 +217,7 @@
                 Status = Enums.CustomerStatus.ACTIVE
             };
 
-            var service = new CustomerService(_mockCustomerRepository.Object);
+            var service = new CustomerService(_mockCustomerRepository.Object, _mockLeadsService.Object);;
             var result = await Assert.ThrowsAsync<ArgumentException>(async () => await service.UpdateCustomerAsync(customerModel.Id, customerModel));
 
             Assert.NotNull(result);
@@ -236,7 +238,7 @@
                 PhoneNumber = "0211034226",
             };
 
-            var service = new CustomerService(_mockCustomerRepository.Object);
+            var service = new CustomerService(_mockCustomerRepository.Object, _mockLeadsService.Object);;
             var result = await Assert.ThrowsAsync<ArgumentException>(async () => await service.UpdateCustomerAsync(customerModel.Id, customerModel));
 
             Assert.NotNull(result);
@@ -249,7 +251,7 @@
             _mockCustomerRepository.Setup(c => c.GetCustomerByID(It.IsAny<string>())).Returns(_mockSingleCustomer);
             _mockCustomerRepository.Setup(c => c.SaveCustomerAsync(It.IsAny<CustomerModel>())).ReturnsAsync(_mockSingleCustomer);
 
-            var service = new CustomerService(_mockCustomerRepository.Object);
+            var service = new CustomerService(_mockCustomerRepository.Object, _mockLeadsService.Object);;
             var result = await service.UpdateCustomerAsync(_mockSingleCustomer.Id!, _mockSingleCustomer);
             Assert.True(result);
 
@@ -263,7 +265,7 @@
 
             _mockCustomerRepository.Setup(c => c.GetCustomerByID(It.IsAny<string>())).Returns<CustomerModel>(null);
 
-            var service = new CustomerService(_mockCustomerRepository.Object);
+            var service = new CustomerService(_mockCustomerRepository.Object, _mockLeadsService.Object);;
             var result = await Assert.ThrowsAsync<CustomerNotFoundException>(async () => await service.UpdateCustomerAsync(_mockSingleCustomer.Id, _mockSingleCustomer));
 
             Assert.NotNull(result);
@@ -279,7 +281,7 @@
                 Status = Enums.CustomerStatus.ACTIVE
             };
 
-            var service = new CustomerService(_mockCustomerRepository.Object);
+            var service = new CustomerService(_mockCustomerRepository.Object, _mockLeadsService.Object);;
             var result = await Assert.ThrowsAsync<ArgumentNullException>(async () => await service.UpdateCustomerStatusAsync("", statusUpdateRequest));
 
             Assert.NotNull(result);
@@ -291,7 +293,7 @@
         {
             var customerModel = new CustomerStatusUpdateRequest();
 
-            var service = new CustomerService(_mockCustomerRepository.Object);
+            var service = new CustomerService(_mockCustomerRepository.Object, _mockLeadsService.Object);;
             var result = await Assert.ThrowsAsync<ArgumentException>(async () => await service.UpdateCustomerStatusAsync(It.IsAny<string>(), customerModel));
 
             Assert.NotNull(result);
@@ -309,7 +311,7 @@
             _mockCustomerRepository.Setup(c => c.GetCustomerByID(It.IsAny<string>())).Returns(_mockSingleCustomer);
             _mockCustomerRepository.Setup(c => c.SaveCustomerAsync(It.IsAny<CustomerModel>())).ReturnsAsync(_mockSingleCustomer);
 
-            var service = new CustomerService(_mockCustomerRepository.Object);
+            var service = new CustomerService(_mockCustomerRepository.Object, _mockLeadsService.Object);;
             var result = await service.UpdateCustomerStatusAsync(_mockSingleCustomer.Id!, statusUpdateRequest);
             Assert.True(result);
 
@@ -327,7 +329,7 @@
 
             _mockCustomerRepository.Setup(c => c.GetCustomerByID(It.IsAny<string>())).Returns<CustomerModel>(null);
 
-            var service = new CustomerService(_mockCustomerRepository.Object);
+            var service = new CustomerService(_mockCustomerRepository.Object, _mockLeadsService.Object);;
             var result = await Assert.ThrowsAsync<CustomerNotFoundException>(async () => await service.UpdateCustomerStatusAsync(_mockSingleCustomer.Id, statusUpdateRequest));
 
             Assert.NotNull(result);
@@ -349,7 +351,7 @@
                 Status = Enums.CustomerStatus.ACTIVE
             };
 
-            var service = new CustomerService(_mockCustomerRepository.Object);
+            var service = new CustomerService(_mockCustomerRepository.Object, _mockLeadsService.Object);;
             var result = await Assert.ThrowsAsync<ArgumentException>(async () => await service.CreateCustomerAsync(customerModel));
 
             Assert.NotNull(result);
@@ -370,7 +372,7 @@
                 Status = Enums.CustomerStatus.ACTIVE
             };
 
-            var service = new CustomerService(_mockCustomerRepository.Object);
+            var service = new CustomerService(_mockCustomerRepository.Object, _mockLeadsService.Object);
             var result = await Assert.ThrowsAsync<ArgumentException>(async () => await service.CreateCustomerAsync(customerModel));
 
             Assert.NotNull(result);
@@ -391,7 +393,7 @@
                 Status = Enums.CustomerStatus.ACTIVE
             };
 
-            var service = new CustomerService(_mockCustomerRepository.Object);
+            var service = new CustomerService(_mockCustomerRepository.Object, _mockLeadsService.Object);;
             var result = await Assert.ThrowsAsync<ArgumentException>(async () => await service.CreateCustomerAsync(customerModel));
 
             Assert.NotNull(result);
@@ -412,7 +414,7 @@
                 Status = Enums.CustomerStatus.ACTIVE
             };
 
-            var service = new CustomerService(_mockCustomerRepository.Object);
+            var service = new CustomerService(_mockCustomerRepository.Object, _mockLeadsService.Object);;
             var result = await Assert.ThrowsAsync<ArgumentException>(async () => await service.CreateCustomerAsync(customerModel));
 
             Assert.NotNull(result);
@@ -433,7 +435,7 @@
                 Status = Enums.CustomerStatus.ACTIVE
             };
 
-            var service = new CustomerService(_mockCustomerRepository.Object);
+            var service = new CustomerService(_mockCustomerRepository.Object, _mockLeadsService.Object);;
             var result = await Assert.ThrowsAsync<ArgumentException>(async () => await service.CreateCustomerAsync(customerModel));
 
             Assert.NotNull(result);
@@ -454,7 +456,7 @@
                 PhoneNumber = "0211034226",
             };
 
-            var service = new CustomerService(_mockCustomerRepository.Object);
+            var service = new CustomerService(_mockCustomerRepository.Object, _mockLeadsService.Object);;
             var result = await Assert.ThrowsAsync<ArgumentException>(async () => await service.CreateCustomerAsync(customerModel));
 
             Assert.NotNull(result);
@@ -465,7 +467,7 @@
         public async Task CreateCustomerAsync_returns_a_valid_customer()
         {
             _mockCustomerRepository.Setup(c => c.SaveCustomerAsync(It.IsAny<CustomerModel>())).ReturnsAsync(_mockSingleCustomer);
-            var service = new CustomerService(_mockCustomerRepository.Object);
+            var service = new CustomerService(_mockCustomerRepository.Object, _mockLeadsService.Object);;
             var result = await service.CreateCustomerAsync(_mockSingleCustomer);
 
             Assert.NotNull(result);
@@ -480,7 +482,7 @@
             _mockCustomerRepository.Setup(u => u.GetCustomerByID(_mockSingleCustomer.Id)).Returns(_mockSingleCustomer);
             _mockCustomerRepository.Setup(u => u.DeleteCustomerAsync(_mockSingleCustomer)).ReturnsAsync(true);
 
-            var service = new CustomerService(_mockCustomerRepository.Object);
+            var service = new CustomerService(_mockCustomerRepository.Object, _mockLeadsService.Object);;
             var result = await service.DeleteCustomerAsync(_mockSingleCustomer.Id);
 
             Assert.True(result);
@@ -493,7 +495,7 @@
             var id = "";
             _mockCustomerRepository.Setup(u => u.DeleteCustomerAsync(_mockSingleCustomer)).ReturnsAsync(true);
 
-            var service = new CustomerService(_mockCustomerRepository.Object);
+            var service = new CustomerService(_mockCustomerRepository.Object, _mockLeadsService.Object);;
             var result = await Assert.ThrowsAsync<ArgumentNullException>(() => service.DeleteCustomerAsync(id));
 
             Assert.NotNull(result);

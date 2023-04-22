@@ -8,5 +8,6 @@ namespace Customer.Service.Services
         LeadModel? GetLeadById(string id);
         Task<LeadModel> CreateLeadAsync(LeadModel model);
         Task<bool> UpdateLeadAsync(string id, LeadModel model);
+        Task<bool> DeleteAllAsync(string customerId);
     }
 }

@@ -4,7 +4,7 @@ namespace Customer.Service.Services
 {
     public interface ICustomerService
     {
-        IEnumerable<CustomerModel> GetAllCustomers(GetUsersRequest request);
+        IEnumerable<CustomerModel> GetAllCustomers(GetCustomerRequest request);
         CustomerModel GetCustomerByID(string id);
         Task<CustomerModel> CreateCustomerAsync(CustomerModel model);
         Task<bool> UpdateCustomerAsync(string id, CustomerModel model);

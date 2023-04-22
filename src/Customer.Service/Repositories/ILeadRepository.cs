@@ -7,5 +7,6 @@ namespace Customer.Service.Repositories
         IEnumerable<LeadModel> GetLeads(string customerId);
         LeadModel? GetLeadById(string id);
         Task<LeadModel> SaveLeadAsync(LeadModel model);
+        Task<bool> DeleteAllAsync(string customerId);
     }
 }

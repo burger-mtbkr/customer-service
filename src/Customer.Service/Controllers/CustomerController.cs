@@ -25,7 +25,7 @@ namespace Customer.Service.Controllers
         /// <returns></returns>
         [HttpGet("search")]
         [ProducesResponseType(typeof(IEnumerable<CustomerModel>), StatusCodes.Status200OK)]
-        public ActionResult<IEnumerable<CustomerModel>> Search([FromQuery] GetUsersRequest request)
+        public ActionResult<IEnumerable<CustomerModel>> Search([FromQuery] GetCustomerRequest request)
         {
             var result = _customerService.GetAllCustomers(request);
             return Ok(result);
