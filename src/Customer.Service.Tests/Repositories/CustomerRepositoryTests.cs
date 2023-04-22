@@ -65,7 +65,7 @@
         {
             _collection.Setup(c => c.AsQueryable()).Returns(_mockCustomerList);
             var customerRepo = new CustomerRepository(_collection.Object);
-            var result = customerRepo.GetAllCustomers(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), null);
+            var result = customerRepo.GetAllCustomers(new GetCustomerRequest());
 
             Assert.NotNull(result);
             Assert.IsAssignableFrom<IEnumerable<CustomerModel>>(result);
@@ -78,7 +78,7 @@
         {
             _collection.Setup(c => c.AsQueryable()).Returns(new List<CustomerModel>());
             var customerRepo = new CustomerRepository(_collection.Object);
-            var result = customerRepo.GetAllCustomers(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>());
+            var result = customerRepo.GetAllCustomers(new GetCustomerRequest());
 
             Assert.NotNull(result);
             Assert.IsAssignableFrom<IEnumerable<CustomerModel>>(result);
@@ -132,9 +132,14 @@
         [Fact]
         public void GetAllCustomers_with_search_string_returns_correct_data()
         {
+            GetCustomerRequest mockRequest = new()
+            {
+                SearchText = "steve"
+            };
+
             _collection.Setup(c => c.AsQueryable()).Returns(_mockCustomerList);
             var customerRepo = new CustomerRepository(_collection.Object);
-            var result = customerRepo.GetAllCustomers(It.IsAny<string>(), It.IsAny<string>(), "steve", null);
+            var result = customerRepo.GetAllCustomers(mockRequest);
 
             Assert.NotNull(result);
 
@@ -149,9 +154,15 @@
         [Fact]
         public void GetAllCustomers_with_sortField_asc_returns_correct_data_sored()
         {
+            GetCustomerRequest mockRequest = new()
+            {
+                SortBy = "firstName",
+                SortDirection = "asc"
+            };
+
             _collection.Setup(c => c.AsQueryable()).Returns(_mockCustomerList);
             var customerRepo = new CustomerRepository(_collection.Object);
-            var result = customerRepo.GetAllCustomers("firstName", "asc");
+            var result = customerRepo.GetAllCustomers(mockRequest);
 
             Assert.NotNull(result);
 
@@ -165,9 +176,15 @@
         [Fact]
         public void GetAllCustomers_with_sortField_desc_returns_correct_data_sored()
         {
+            GetCustomerRequest mockRequest = new()
+            {
+                SortBy = "firstName",
+                SortDirection = "desc"
+            };
+
             _collection.Setup(c => c.AsQueryable()).Returns(_mockCustomerList);
             var customerRepo = new CustomerRepository(_collection.Object);
-            var result = customerRepo.GetAllCustomers("firstName", "desc");
+            var result = customerRepo.GetAllCustomers(mockRequest);
 
             Assert.NotNull(result);
 
@@ -181,9 +198,15 @@
         [Fact]
         public void GetAllCustomers_without_sortField_returns_correct_data_sored_asc()
         {
+
+            GetCustomerRequest mockRequest = new()
+            {
+                SortDirection = "asc"
+            };
+
             _collection.Setup(c => c.AsQueryable()).Returns(_mockCustomerList);
             var customerRepo = new CustomerRepository(_collection.Object);
-            var result = customerRepo.GetAllCustomers("", "asc");
+            var result = customerRepo.GetAllCustomers(mockRequest);
 
             Assert.NotNull(result);
 
@@ -198,9 +221,14 @@
         [Fact]
         public void GetAllCustomers_without_sortField_returns_correct_data_sored_desc()
         {
+            GetCustomerRequest mockRequest = new()
+            {
+                SortDirection = "desc"
+            };
+
             _collection.Setup(c => c.AsQueryable()).Returns(_mockCustomerList);
             var customerRepo = new CustomerRepository(_collection.Object);
-            var result = customerRepo.GetAllCustomers("", "desc");
+            var result = customerRepo.GetAllCustomers(mockRequest);
 
             Assert.NotNull(result);
 
@@ -214,9 +242,15 @@
         [Fact]
         public void GetAllCustomers_with_incorrect_sortField_returns_correct_data_sored_asc()
         {
+            GetCustomerRequest mockRequest = new()
+            {
+                SortBy = "kjkhjkhjk",
+                SortDirection = "asc"
+            };
+
             _collection.Setup(c => c.AsQueryable()).Returns(_mockCustomerList);
             var customerRepo = new CustomerRepository(_collection.Object);
-            var result = customerRepo.GetAllCustomers("jhkhkj", "asc");
+            var result = customerRepo.GetAllCustomers(mockRequest);
 
             Assert.NotNull(result);
 
@@ -231,9 +265,15 @@
         [Fact]
         public void GetAllCustomers_with_incorrect_sortField_returns_correct_data_sored_desc()
         {
+            GetCustomerRequest mockRequest = new()
+            {
+                SortBy = "kjkhjkhjk",
+                SortDirection = "desc"
+            };
+
             _collection.Setup(c => c.AsQueryable()).Returns(_mockCustomerList);
             var customerRepo = new CustomerRepository(_collection.Object);
-            var result = customerRepo.GetAllCustomers("jhjhgj", "desc");
+            var result = customerRepo.GetAllCustomers(mockRequest);
 
             Assert.NotNull(result);
 
@@ -247,9 +287,17 @@
         [Fact]
         public void GetAllCustomers_with_active_statuFilter_returns_correct_data()
         {
+            GetCustomerRequest mockRequest = new()
+            {
+                SortBy = "firstName",
+                SortDirection = "asc",
+                SearchText = "",
+                StatusFilter = 0
+            };
+
             _collection.Setup(c => c.AsQueryable()).Returns(_mockCustomerList);
             var customerRepo = new CustomerRepository(_collection.Object);
-            var result = customerRepo.GetAllCustomers("firstName", "asc", "", 0);
+            var result = customerRepo.GetAllCustomers(mockRequest);
 
             Assert.NotNull(result);
             Assert.IsAssignableFrom<IEnumerable<CustomerModel>>(result);
@@ -260,9 +308,18 @@
         [Fact]
         public void GetAllCustomers_with_lead_statuFilter_returns_correct_data()
         {
+
+            GetCustomerRequest mockRequest = new()
+            {
+                SortBy = "firstName",
+                SortDirection = "asc",
+                SearchText = "",
+                StatusFilter = 1
+            };
+
             _collection.Setup(c => c.AsQueryable()).Returns(_mockCustomerList);
             var customerRepo = new CustomerRepository(_collection.Object);
-            var result = customerRepo.GetAllCustomers("firstName", "asc", "", 1);
+            var result = customerRepo.GetAllCustomers(mockRequest);
 
             Assert.NotNull(result);
             Assert.IsAssignableFrom<IEnumerable<CustomerModel>>(result);
@@ -273,9 +330,17 @@
         [Fact]
         public void GetAllCustomers_with_non_active_statuFilter__returns_correct_data()
         {
+
+            GetCustomerRequest mockRequest = new()
+            {
+                SortBy = "firstName",
+                SortDirection = "asc",
+                SearchText = "",
+                StatusFilter = 2
+            };
             _collection.Setup(c => c.AsQueryable()).Returns(_mockCustomerList);
             var customerRepo = new CustomerRepository(_collection.Object);
-            var result = customerRepo.GetAllCustomers("firstName", "asc", "", 2);
+            var result = customerRepo.GetAllCustomers(mockRequest);
 
             Assert.NotNull(result);
             Assert.IsAssignableFrom<IEnumerable<CustomerModel>>(result);
@@ -286,9 +351,17 @@
         [Fact]
         public void GetAllCustomers_with_incorrect_active_statuFilter_returns_all__data()
         {
+
+            GetCustomerRequest mockRequest = new()
+            {
+                SortBy = "firstName",
+                SortDirection = "asc",
+                SearchText = "",
+                StatusFilter = 5
+            };
             _collection.Setup(c => c.AsQueryable()).Returns(_mockCustomerList);
             var customerRepo = new CustomerRepository(_collection.Object);
-            var result = customerRepo.GetAllCustomers("firstName", "asc", "", 5);
+            var result = customerRepo.GetAllCustomers(mockRequest);
 
             Assert.NotNull(result);
             Assert.IsAssignableFrom<IEnumerable<CustomerModel>>(result);

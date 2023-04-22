@@ -49,6 +49,13 @@ namespace Customer.Service.Services
             return true;
         }
 
+
+        public async Task<bool> DeleteAllAsync(string customerId)
+        {           
+            if(string.IsNullOrEmpty(customerId)) throw new ArgumentNullException(nameof(customerId));
+            return await _leadRepository.DeleteAllAsync(customerId);
+        }
+
         /// <summary>
         /// Worth noting I would normally use a type of action filter
         /// to manage valdiation for a particular entity type but in the interest of time opeted for a more manual approach. 

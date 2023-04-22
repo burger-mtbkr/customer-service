@@ -8,10 +8,12 @@ namespace Customer.Service.Services
     public class CustomerService: ICustomerService
     {
         private readonly ICustomerRepository _repository;
+        private readonly ILeadsService _leadsService;
 
-        public CustomerService(ICustomerRepository repository)
+        public CustomerService(ICustomerRepository repository, ILeadsService leadsService)
         {
             _repository = repository;
+            _leadsService = leadsService;
         }
 
         public async Task<CustomerModel> CreateCustomerAsync(CustomerModel model)
@@ -24,13 +26,36 @@ namespace Customer.Service.Services
             return await _repository.SaveCustomerAsync(model);
         }
 
-        public IEnumerable<CustomerModel> GetAllCustomers(GetUsersRequest request) => _repository.GetAllCustomers(request);
+        public IEnumerable<CustomerModel>? GetAllCustomers(GetCustomerRequest request)
+        {
+            var customers = _repository.GetAllCustomers(request);
+
+            if(customers?.Any() == true)
+            {
+                foreach(var c in customers)
+                {
+                    var leads = _leadsService.GetLeads(c.Id!);
+                    if(leads?.Any() == true)
+                    {
+                        c.LeadCount = leads.Count();
+                    }
+                }
+                return customers;
+            }
+            return new List<CustomerModel>();
+        }
 
         public CustomerModel GetCustomerByID(string id)
         {
             if(string.IsNullOrEmpty(id)) throw new ArgumentNullException(nameof(id));
             var customer = _repository.GetCustomerByID(id);
             if(customer == null) throw new CustomerNotFoundException($"Customer not found for id {id}");
+            var leads = _leadsService.GetLeads(customer.Id!);
+            if(leads?.Any() == true)
+            {
+                customer.LeadCount = leads.Count();
+            }
+
             return customer;
         }
 
@@ -57,6 +82,16 @@ namespace Customer.Service.Services
         {
             if(string.IsNullOrEmpty(id)) throw new ArgumentNullException(nameof(id));
             var customer = GetCustomerByID(id);
+
+            var leads = _leadsService.GetLeads(customer.Id!);
+            if(leads?.Any() == true)
+            {
+               foreach( var lead in leads)
+                {
+                    await _leadsService.DeleteAllAsync(customer.Id!);
+                }
+            }
+
             var result = await _repository.DeleteCustomerAsync(customer);
             return result;
         }
