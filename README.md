@@ -10,8 +10,6 @@ This is a .Net 7 API with a swagger ui utilising a [JsonFlatFileDataStore](https
   - The image will be published to [docker hub](https://hub.docker.com/repository/docker/loanburger/customer-service/general)
   - The image will be published as a github [package](https://github.com/orgs/burger-mtbkr/packages?repo_name=customer-service)
 
-**Production url:** http://customerservice-dev.eba-rm6agvep.ap-southeast-2.elasticbeanstalk.com/swagger
-
 ### 1. How to test the api:
 
 **Using docker:**
