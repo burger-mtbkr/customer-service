@@ -1,4 +1,4 @@
-## Spidertracks fullstack engineering test - API
+## Spidertracks Customer API
 
 This is a .Net 7 API with a swagger ui utilising a [JsonFlatFileDataStore](https://github.com/ttu/json-flatfile-datastore). I have added some [assumptions](/docs/ASSUMPTIONS.md) and [future improvements](/docs/IMPROVEMENTS.md). The api is secured using token based authentication.
 
@@ -16,18 +16,19 @@ This is a .Net 7 API with a swagger ui utilising a [JsonFlatFileDataStore](https
 
 - The api is published to a repository in docker.
 - The image can be pulled down using: `docker pull loanburger/customer-service:latest`
-- Once you have pulled down the api, run it locally using `docker run -p 32780:80 loanburger/customer-service:latest`
+- Once you have pulled down the api, run it locally using `docker run -p <port> loanburger/customer-service:latest`
 
 **Local debugging:**
 
 - Clone this repository.
 - Open the Solution file under src/Customer/service
-- Run the app
+- Run the app (dont use SSL)
+- Easier is to use the Docker Launch Settings
 
 **Initial steps:**
 
 - :lock: The api is secured so you will need to signup to it.
-- :eyes: Browse the swagger page using: http://localhost:32780/swagger/index.html
+- :eyes: Browse the swagger page using: http://localhost:<port>/swagger/index.html
 - Go the `/api/signup` POST method and signup.
 - After signing up you will receive a token in the response of your request
 - Scroll to the top of the page and click the green Authorize button
