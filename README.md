@@ -1,4 +1,4 @@
-## Spidertracks fullstack engineering test - API
+## Spidertracks Customer API
 
 This is a .Net 7 API with a swagger ui utilising a [JsonFlatFileDataStore](https://github.com/ttu/json-flatfile-datastore). I have added some [assumptions](/docs/ASSUMPTIONS.md) and [future improvements](/docs/IMPROVEMENTS.md). The api is secured using token based authentication.
 
