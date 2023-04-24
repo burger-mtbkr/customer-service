@@ -13,6 +13,7 @@ namespace Customer.Service.Ignition
                 .MinimumLevel.Information()
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
                 .WriteTo.Console()
+                .WriteTo.File("logs.txt")
                 .CreateLogger();
 
             builder.Host.UseSerilog();

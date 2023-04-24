@@ -1,6 +1,7 @@
 ﻿using Customer.Service.Exceptions;
 using Customer.Service.Models;
 using Customer.Service.Repositories;
+using System.Reflection;
 
 namespace Customer.Service.Services
 {
@@ -44,15 +45,23 @@ namespace Customer.Service.Services
             ValidateLeadModel(model);
 
             // make sure the lead exists
-            GetLeadById(id);
-            await _leadRepository.SaveLeadAsync(model);
+            var lead = GetLeadById(id);
+
+            if(lead != null)
+            {
+                lead.Name = model.Name;
+                lead.Source = model.Source;
+                lead.Status = model.Status;                
+
+                await _leadRepository.SaveLeadAsync(lead);
+            }
             return true;
         }
 
 
         public async Task<bool> DeleteAllAsync(string customerId)
         {           
-            if(string.IsNullOrEmpty(customerId)) throw new ArgumentNullException(nameof(customerId));
+            if(string.IsNullOrEmpty(customerId)) throw new ArgumentException($"{nameof(customerId)} is required");
             return await _leadRepository.DeleteAllAsync(customerId);
         }
 

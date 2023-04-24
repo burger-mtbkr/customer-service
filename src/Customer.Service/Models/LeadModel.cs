@@ -5,8 +5,8 @@ namespace Customer.Service.Models
     public record LeadModel: BaseModel
     {
         public string CustomerId { get; init; }
-        public LeadStatus? Status { get; init; }
-        public string Name { get; init; }
-        public string Source { get; init; }
+        public LeadStatus? Status { get; set; }
+        public string Name { get; set; }
+        public string Source { get; set; }
     }
 }

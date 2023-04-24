@@ -1,4 +1,7 @@
-﻿namespace Customer.Service.Tests.Services
+﻿using Customer.Service.Models;
+using Moq;
+
+namespace Customer.Service.Tests.Services
 {
     public class LeadsServicesTests: IDisposable
     {
@@ -133,7 +136,7 @@
             var customerModel = new LeadModel
             {
                 Id = "12345",
-                CustomerId = "11111",                
+                CustomerId = "11111",
                 Source = "Single Lead Source",
                 Status = Enums.LeadStatus.CLOSED_WON,
                 CreatedDateUtc = DateTime.UtcNow,
@@ -164,7 +167,7 @@
             Assert.NotNull(result);
             Assert.Equal("Source is required", result.Message);
         }
-  
+
 
         [Fact]
         public async Task UpdateLeadAsync_throws_ArgumentException_when_status_is_not_provided()
@@ -174,7 +177,7 @@
                 Id = "12345",
                 CustomerId = "11111",
                 Name = "Single Lead",
-                Source = "Single Lead Source",              
+                Source = "Single Lead Source",
                 CreatedDateUtc = DateTime.UtcNow,
             };
 
@@ -305,10 +308,10 @@
             var service = new LeadsService(_mockLeadRepository.Object);
             var result = await service.CreateLeadAsync(_mockSingleLead);
             Assert.NotNull(result);
-            Assert.Equal(_mockSingleLead, result);                        
+            Assert.Equal(_mockSingleLead, result);
             _mockLeadRepository.Verify(r => r.SaveLeadAsync(_mockSingleLead), Times.Once);
         }
- 
+
 
         [Fact]
         public async Task CreateLeadAsync_returns_a_valid_lead()
@@ -321,6 +324,29 @@
             Assert.NotEmpty(result.Id);
             Assert.True(result.CreatedDateUtc < DateTime.UtcNow);
             _mockLeadRepository.Verify(r => r.SaveLeadAsync(_mockSingleLead), Times.Once);
+        }
+
+
+        [Fact]
+        public async Task DeleteAllAsync_calls_repository_DeleteAllAsync_with_correct_customer_id()
+        {
+            _mockLeadRepository.Setup(c => c.DeleteAllAsync(_mockSingleLead.Id)).ReturnsAsync(true);
+
+            var service = new LeadsService(_mockLeadRepository.Object);
+            var result = await service.DeleteAllAsync(_mockSingleLead.Id);
+
+            Assert.True(result);
+            _mockLeadRepository.Verify(r => r.DeleteAllAsync(_mockSingleLead.Id), Times.Once);
+        }
+
+        [Fact]
+        public async Task DeleteAllAsync_throws_ArgumentException_when_status_is_not_provided()
+        {
+            var service = new LeadsService(_mockLeadRepository.Object);            
+
+            var result = await Assert.ThrowsAsync<ArgumentException>(async () => await service.DeleteAllAsync(""));
+            Assert.NotNull(result);
+            Assert.Equal("customerId is required", result.Message);
         }
 
         public void Dispose()

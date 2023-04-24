@@ -16,16 +16,6 @@ namespace Customer.Service.Services
             _leadsService = leadsService;
         }
 
-        public async Task<CustomerModel> CreateCustomerAsync(CustomerModel model)
-        {
-            ValidateCustomerModel(model);
-
-            model.Id = Guid.NewGuid().ToString();
-            model.CreatedDateUtc = DateTime.UtcNow;
-
-            return await _repository.SaveCustomerAsync(model);
-        }
-
         public IEnumerable<CustomerModel>? GetAllCustomers(GetCustomerRequest request)
         {
             var customers = _repository.GetAllCustomers(request);
@@ -34,11 +24,7 @@ namespace Customer.Service.Services
             {
                 foreach(var c in customers)
                 {
-                    var leads = _leadsService.GetLeads(c.Id!);
-                    if(leads?.Any() == true)
-                    {
-                        c.LeadCount = leads.Count();
-                    }
+                    c.LeadCount = GetLeadCount(c.Id);
                 }
                 return customers;
             }
@@ -50,22 +36,41 @@ namespace Customer.Service.Services
             if(string.IsNullOrEmpty(id)) throw new ArgumentNullException(nameof(id));
             var customer = _repository.GetCustomerByID(id);
             if(customer == null) throw new CustomerNotFoundException($"Customer not found for id {id}");
-            var leads = _leadsService.GetLeads(customer.Id!);
-            if(leads?.Any() == true)
-            {
-                customer.LeadCount = leads.Count();
-            }
-
+            customer.LeadCount = GetLeadCount(id);
             return customer;
+        }
+
+        public async Task<CustomerModel> CreateCustomerAsync(CustomerModel model)
+        {
+            ValidateCustomerModel(model);
+
+            // TODO: consider what makes a customer unique.  SHould we disallow adding a new customer if one already exists
+            // with the same email for the same company? I hav enot applied this rule for now but worth thinking about.             
+
+            model.Id = Guid.NewGuid().ToString();
+            model.CreatedDateUtc = DateTime.UtcNow;
+
+            return await _repository.SaveCustomerAsync(model);
         }
 
         public async Task<bool> UpdateCustomerAsync(string id, CustomerModel model)
         {
             ValidateCustomerModel(model);
-            // Get the user to ensure it exists
-            GetCustomerByID(id);
-            await _repository.SaveCustomerAsync(model);
+
+            var customer = GetCustomerByID(id);
+            if(customer != null)
+            {
+                customer.Company = model.Company;
+                customer.PhoneNumber = model.PhoneNumber;
+                customer.FirstName = model.FirstName;
+                customer.LastName = model.LastName;
+                customer.Email = model.Email;
+                customer.Status = model.Status;
+
+                await _repository.SaveCustomerAsync(customer);
+            }
             return true;
+
         }
 
         public async Task<bool> UpdateCustomerStatusAsync(string id, CustomerStatusUpdateRequest model)
@@ -86,10 +91,7 @@ namespace Customer.Service.Services
             var leads = _leadsService.GetLeads(customer.Id!);
             if(leads?.Any() == true)
             {
-               foreach( var lead in leads)
-                {
-                    await _leadsService.DeleteAllAsync(customer.Id!);
-                }
+                await _leadsService.DeleteAllAsync(customer.Id!);
             }
 
             var result = await _repository.DeleteCustomerAsync(customer);
@@ -115,6 +117,12 @@ namespace Customer.Service.Services
             if(!model.Status.HasValue) throw new ArgumentException($"{nameof(model.Status)} is required");
 
             return true;
+        }
+
+        private int GetLeadCount(string customerId)
+        {
+            var leads = _leadsService.GetLeads(customerId);
+            return leads.Count();
         }
     }
 }
