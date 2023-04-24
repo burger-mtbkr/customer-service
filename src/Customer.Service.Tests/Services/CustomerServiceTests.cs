@@ -51,6 +51,28 @@
             };
         }
 
+        private readonly IEnumerable<LeadModel> _mockLeads = new List<LeadModel>
+        {
+            new LeadModel
+            {
+                Id = "71204C8F-7E5C-49E3-9932-2EA81134E30E",
+                CustomerId = "abcdef",
+                Name = "Lead Name",
+                Source = "Lead Source",
+                Status = Enums.LeadStatus.NEW,
+                CreatedDateUtc = DateTime.UtcNow,
+            },
+            new LeadModel
+            {
+                Id = "81304C8F-7E5C-49E3-7756-2EA81137A18P",
+                CustomerId = "11111",
+                Name = "Lead two Name",
+                Source = "Lead two Source",
+                Status = Enums.LeadStatus.CLOSED_LOST,
+                CreatedDateUtc = DateTime.UtcNow,
+            },
+        };
+
         [Fact]
         public void GetAllCustomers_calls_GetAllCustomers_repository()
         {
@@ -90,6 +112,7 @@
 
             _mockCustomerRepository.Verify(r => r.GetCustomerByID(_mockSingleCustomer.Id), Times.Once);
         }
+        
 
         [Fact]
         public void GetCustomerByID_throws_ArgumentNullException_when_id_is_null()
@@ -501,6 +524,40 @@
             Assert.NotNull(result);
             Assert.Equal("Value cannot be null. (Parameter 'id')", result.Message);
         }
+
+        [Fact]
+        public async Task DeleteCustomerAsync_also_deletes_leads_if_the_customer_has_any()
+        {
+            _mockLeadsService.Setup(s => s.GetLeads(_mockSingleCustomer.Id)).Returns(_mockLeads);
+            _mockCustomerRepository.Setup(u => u.GetCustomerByID(_mockSingleCustomer.Id)).Returns(_mockSingleCustomer);
+            _mockCustomerRepository.Setup(u => u.DeleteCustomerAsync(_mockSingleCustomer)).ReturnsAsync(true);
+
+            var service = new CustomerService(_mockCustomerRepository.Object, _mockLeadsService.Object); ;
+            var result = await service.DeleteCustomerAsync(_mockSingleCustomer.Id);
+
+            Assert.True(result);
+
+            _mockCustomerRepository.Verify(r => r.GetCustomerByID(_mockSingleCustomer.Id), Times.Once);
+            _mockCustomerRepository.Verify(r => r.DeleteCustomerAsync(_mockSingleCustomer), Times.Once);
+            _mockLeadsService.Verify(r => r.DeleteAllAsync(_mockSingleCustomer.Id), Times.Once);
+        }
+
+        [Fact]
+        public async Task DeleteCustomerAsync_does_not_call_delete_leads_whne_there_Are_no_leads()
+        {
+            _mockLeadsService.Setup(s => s.GetLeads(_mockSingleCustomer.Id)).Returns(new List<LeadModel>());
+            _mockCustomerRepository.Setup(u => u.GetCustomerByID(_mockSingleCustomer.Id)).Returns(_mockSingleCustomer);
+            _mockCustomerRepository.Setup(u => u.DeleteCustomerAsync(_mockSingleCustomer)).ReturnsAsync(true);
+
+            var service = new CustomerService(_mockCustomerRepository.Object, _mockLeadsService.Object); ;
+            var result = await service.DeleteCustomerAsync(_mockSingleCustomer.Id);
+
+            Assert.True(result);
+
+            _mockCustomerRepository.Verify(r => r.GetCustomerByID(_mockSingleCustomer.Id), Times.Once);
+            _mockCustomerRepository.Verify(r => r.DeleteCustomerAsync(_mockSingleCustomer), Times.Once);
+            _mockLeadsService.Verify(r => r.DeleteAllAsync(_mockSingleCustomer.Id), Times.Never);
+        }     
 
         public void Dispose()
         {
