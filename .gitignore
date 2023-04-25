@@ -350,3 +350,4 @@ MigrationBackup/
 .ionide/
 /src/Customer.Service/customer_service.xml
 src/Customer.Service/logs.txt
+src/Customer.Service/temp-keys

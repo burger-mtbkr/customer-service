@@ -28,12 +28,21 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Docker": {
-      "commandName": "Docker",
-      "launchBrowser": true,
-      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
-      "publishAllPorts": true,
-      "useSSL": false
+    "Docker":
+    {
+        "commandName": "Docker",
+        "launchBrowser": true,
+        "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
+        "publishAllPorts": true,
+        "useSSL": false,
+        "volumes":
+        [
+            {
+                "localPath": "c:\\temp-keys",
+                "containerPath": "/root/.aspnet/DataProtection-Keys",
+                "permissions": "rw"
+            }
+        ]
     }
   },
   "$schema": "https://json.schemastore.org/launchsettings.json",
