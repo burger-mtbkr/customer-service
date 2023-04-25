@@ -22,6 +22,8 @@ builder.ConfigureDataStore();
 builder.Services.ConfigureRepositories();
 builder.Services.ConfigureServices();
 
+builder.ConfigureDataProtection();
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: "AllowAllForAssessment",
@@ -34,12 +36,18 @@ builder.Services.AddCors(options =>
         });
 });
 
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if(app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
+}
+else
+{
+    app.UseHttpsRedirection();
 }
 
 app.UseSwagger(c =>
@@ -63,7 +71,7 @@ app.UseSwaggerUI(c =>
     c.DisplayRequestDuration();
 });
 
-app.UseHttpsRedirection();
+
 
 app.UseStaticFiles();
 app.UseRouting();
